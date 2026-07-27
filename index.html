@@ -302,10 +302,10 @@
                         <tr><td id="lbl-apm">APM</td><td class="val" id="row-apm">$0.00</td></tr>
                         <tr><td>IVA (13%)</td><td class="val" id="row-iva">$0.00</td></tr>
                         <tr><td>AIV - Anticipo (1%)</td><td class="val" id="row-aiv">$0.00</td></tr>
-                        <tr><td>Trámite Aduanal y Portuario</td><td class="val" id="row-tramite-aduanal">$113.00</td></tr>
+                        <tr><td>Trámite Aduanal</td><td class="val" id="row-tramite-aduanal">$113.00</td></tr>
                         <tr><td>Storage (Almacenaje)</td><td class="val" id="row-storage">$0.00</td></tr>
-                        <tr><td>Comisión / Manejo Fondos</td><td class="val" id="row-comision">$0.00</td></tr>
-                        <tr><td>Gestoría / Agencia Aduanal</td><td class="val" id="row-agencia">$350.00</td></tr>
+                        <tr><td>Pago a Cuenta 1.75%</td><td class="val" id="row-comision">$0.00</td></tr>
+                        <tr><td>Comisión</td><td class="val" id="row-agencia">$350.00</td></tr>
                         <tr><td>Estimación Taller</td><td class="val" id="row-reparacion">$0.00</td></tr>
                     </table>
                 </div>
@@ -649,7 +649,7 @@
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Comisión Fondos:* ${fmt(d.comisionFondos)}\n📋 *Agencia Aduanal:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
+        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n📋 *Comisión:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
         navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
 
