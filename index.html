@@ -33,7 +33,7 @@
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
-            padding-bottom: 70px; /* Espacio para barra inferior móvil */
+            padding-bottom: 70px;
         }
 
         .sidebar {
@@ -141,7 +141,6 @@
 
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
-        /* ESTILOS ESPECÍFICOS PARA MÓVIL */
         @media (max-width: 768px) {
             body { flex-direction: column; padding-bottom: 80px; }
             .sidebar {
@@ -200,7 +199,7 @@
         <div class="top-header">
             <div>
                 <h1>CALCULADORA DE IMPORTACIÓN</h1>
-                <p>Costos, tributos DUCA y gastos para El Salvador</p>
+                <p>Costos e impuestos El Salvador</p>
             </div>
             <button class="btn btn-outline" style="padding: 6px 10px; font-size: 11px;" onclick="limpiarFormulario()">🔄 Nuevo</button>
         </div>
