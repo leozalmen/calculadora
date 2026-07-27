@@ -134,6 +134,7 @@
         .btn { padding: 8px 12px; border: none; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 4px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
         .btn-sm { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
 
@@ -530,13 +531,16 @@
             return;
         }
         tbody.innerHTML = historialData.map((item) => `
-            <tr class="clickable-row">
-                <td onclick="abrirCotizacion('${item.id}')">${item.fecha}</td>
-                <td onclick="abrirCotizacion('${item.id}')"><strong>${item.vehiculo || 'Sin Nombre'}</strong></td>
-                <td onclick="abrirCotizacion('${item.id}')"><strong>${fmt(item.totalFinal)}</strong></td>
+            <tr>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">${item.fecha}</td>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')"><strong>${item.vehiculo || 'Sin Nombre'}</strong></td>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')"><strong>${fmt(item.totalFinal)}</strong></td>
                 <td>
-                    <button class="btn btn-primary btn-sm" onclick="abrirCotizacion('${item.id}')">📂 Abrir</button>
-                    <button class="btn btn-outline btn-sm" onclick="pasarAInventario('${item.id}')">➕ Stock</button>
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                        <button class="btn btn-primary btn-sm" onclick="abrirCotizacion('${item.id}')">📂 Abrir</button>
+                        <button class="btn btn-outline btn-sm" onclick="pasarAInventario('${item.id}')">➕ Stock</button>
+                        <button class="btn btn-danger btn-sm" onclick="borrarHistorial('${item.id}')">🗑️</button>
+                    </div>
                 </td>
             </tr>
         `).join('');
@@ -557,9 +561,18 @@
         document.getElementById('storage').value = item.storage || 0;
         document.getElementById('reparacion').value = item.reparacion || 0;
 
-        // Cambiar a la pestaña de calculadora
         switchTab('calculadora', document.querySelectorAll('.nav-item')[0]);
         calcular();
+    }
+
+    function borrarHistorial(docId) {
+        if(confirm('¿Estás seguro de eliminar esta cotización del historial?')) {
+            db.collection('historial').doc(docId).delete().then(() => {
+                // Se actualizará automáticamente gracias a onSnapshot
+            }).catch(error => {
+                alert('Error al eliminar: ' + error.message);
+            });
+        }
     }
 
     function pasarAInventario(docId) {
