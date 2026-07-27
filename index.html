@@ -123,7 +123,7 @@
 
         .table-responsive { width: 100%; overflow-x: auto; max-height: 280px; overflow-y: auto; }
         .table-results, .data-table { width: 100%; border-collapse: collapse; }
-        .table-results td, .data-table th, .data-table td { padding: 7px 8px; font-size: 11px; border-bottom: 1px solid var(--border); text-align: left; }
+        .table-results td, .data-table th, .data-table td { padding: 6px 8px; font-size: 11px; border-bottom: 1px solid var(--border); text-align: left; }
         .data-table th { background: #f8fafc; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; white-space: nowrap; }
         .table-results td.val { text-align: right; font-weight: 700; }
 
@@ -203,8 +203,8 @@
     <div id="calculadora" class="tab-content active">
         <div class="top-header">
             <div>
-                <h1>CALCULADORA DE IMPORTACIÓN</h1>
-                <p>Costos e impuestos El Salvador</p>
+                <h1>CALCULADORA IMPORSALV SA DE CV</h1>
+                <p>Gestión de importación de vehículos</p>
             </div>
             <button class="btn btn-outline" style="padding: 6px 10px; font-size: 11px;" onclick="limpiarFormulario()">🔄 Nuevo</button>
         </div>
@@ -291,20 +291,17 @@
 
                 <div class="table-responsive">
                     <table class="table-results">
-                        <tr><td>Precio Subasta</td><td class="val" id="row-precio">$0.00</td></tr>
                         <tr><td>Buyer Fee Subasta</td><td class="val" id="row-fee">$0.00</td></tr>
                         <tr><td>Otros Cargos Subasta</td><td class="val" id="row-copart-extra">$195.00</td></tr>
                         <tr><td>FOB Subasta Total</td><td class="val" id="row-fob">$0.00</td></tr>
-                        <tr><td>Flete Marítimo</td><td class="val" id="row-flete">$0.00</td></tr>
-                        <tr><td>Seguro Marítimo</td><td class="val" id="row-seguro">$0.00</td></tr>
                         <tr><td>CIF Aduana</td><td class="val" id="row-cif">$0.00</td></tr>
                         <tr><td id="lbl-dai">DAI</td><td class="val" id="row-dai">$0.00</td></tr>
                         <tr><td id="lbl-apm">APM</td><td class="val" id="row-apm">$0.00</td></tr>
                         <tr><td>IVA (13%)</td><td class="val" id="row-iva">$0.00</td></tr>
                         <tr><td>AIV - Anticipo (1%)</td><td class="val" id="row-aiv">$0.00</td></tr>
-                        <tr><td>Trámites / Manifiesto / Portuario</td><td class="val" id="row-tramites">$17.80</td></tr>
-                        <tr><td>Storage (Almacenaje Puerto)</td><td class="val" id="row-storage">$0.00</td></tr>
-                        <tr><td>Comisión / Manejo Fondos (1.75%)</td><td class="val" id="row-comision">$0.00</td></tr>
+                        <tr><td>Trámite Aduanal / Portuario</td><td class="val" id="row-tramite-aduanal">$17.80</td></tr>
+                        <tr><td>Storage (Almacenaje)</td><td class="val" id="row-storage">$0.00</td></tr>
+                        <tr><td>Comisión / Manejo Fondos</td><td class="val" id="row-comision">$0.00</td></tr>
                         <tr><td>Gestoría / Agencia Aduanal</td><td class="val" id="row-agencia">$350.00</td></tr>
                         <tr><td>Estimación Taller</td><td class="val" id="row-reparacion">$0.00</td></tr>
                     </table>
@@ -485,19 +482,19 @@
         let apm = cif * apmPct;
         let iva = (cif + dai + apm) * 0.13;
         let aiv = cif * 0.01;
-        let tramitesPortuarios = 15.93 + 2.07; // 17.80
+        let tramiteAduanal = 15.93 + 2.07; // 17.80
         let comisionFondos = cif * 0.0175;
         let agenciaAduanal = 350.00;
 
-        let tributosAduana = dai + apm + iva + aiv + tramitesPortuarios;
+        let tributosAduana = dai + apm + iva + aiv + tramiteAduanal;
         let totalOtrosGastos = storage + reparacion + comisionFondos + agenciaAduanal + 113.00;
-        let totalFinal = fob + flete + seguro + tributosAduana + totalOtrosGastos - 113.00; // Ajuste para mantener la exactitud de la fórmula original de suma
+        let totalFinal = fob + flete + seguro + tributosAduana + totalOtrosGastos - 113.00;
 
         datosUltimoCalculo = {
             fecha: new Date().toLocaleDateString(),
             timestamp: Date.now(),
             vehiculo, vin, lote, precio, buyerFee, copartExtra, fob, cif,
-            dai, apm, iva, aiv, tramitesPortuarios, storage, comisionFondos, agenciaAduanal,
+            dai, apm, iva, aiv, tramiteAduanal, storage, comisionFondos, agenciaAduanal,
             tributosAduana, totalOtrosGastos, totalFinal, reparacion,
             flete, seguro, titulo: document.getElementById('titulo').value,
             categoria: document.getElementById('categoria').value
@@ -507,15 +504,11 @@
         document.getElementById('kpi-cif').innerText = fmt(cif);
         document.getElementById('kpi-duca').innerText = fmt(tributosAduana);
         
-        document.getElementById('row-precio').innerText = fmt(precio);
         document.getElementById('row-fee').innerText = fmt(buyerFee);
         document.getElementById('row-copart-extra').innerText = fmt(copartExtra);
         document.getElementById('row-fob').innerText = fmt(fob);
-        document.getElementById('row-flete').innerText = fmt(flete);
-        document.getElementById('row-seguro').innerText = fmt(seguro);
         document.getElementById('row-cif').innerText = fmt(cif);
         
-        // Actualizar etiquetas dinámicas con porcentajes
         document.getElementById('lbl-dai').innerText = `DAI (${(daiPct*100).toFixed(0)}%)`;
         document.getElementById('row-dai').innerText = fmt(dai);
         
@@ -524,7 +517,7 @@
         
         document.getElementById('row-iva').innerText = fmt(iva);
         document.getElementById('row-aiv').innerText = fmt(aiv);
-        document.getElementById('row-tramites').innerText = fmt(tramitesPortuarios);
+        document.getElementById('row-tramite-aduanal').innerText = fmt(tramiteAduanal);
         document.getElementById('row-storage').innerText = fmt(storage);
         document.getElementById('row-comision').innerText = fmt(comisionFondos);
         document.getElementById('row-agencia').innerText = fmt(agenciaAduanal);
@@ -650,7 +643,7 @@
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta + Fees:* ${fmt(d.fob)}\n🚢 *Flete/Seguro:* ${fmt(d.flete + d.seguro)}\n🏛️ *Impuestos DUCA:* ${fmt(d.tributosAduana)}\n🔧 *Est. Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL ESTIMADO:* ${fmt(d.totalFinal)}`;
+        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta + Fees:* ${fmt(d.fob)}\n🚢 *Flete/Seguro:* ${fmt(d.flete + d.seguro)}\n🏛️ *Impuestos DU:* ${fmt(d.tributosAduana)}\n🔧 *Est. Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL ESTIMADO:* ${fmt(d.totalFinal)}`;
         navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
 
