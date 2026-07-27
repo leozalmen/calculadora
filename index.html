@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CALCULADORA IMPORSALV SA DE CV (NUBE)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CALCULADORA IMPORSALV SA DE CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -26,13 +26,14 @@
             --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
             display: flex;
             min-height: 100vh;
+            padding-bottom: 70px; /* Espacio para barra inferior móvil */
         }
 
         .sidebar {
@@ -51,11 +52,11 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding-bottom: 20px;
+            padding-bottom: 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .logo-svg { width: 180px; height: auto; margin-bottom: 6px; }
+        .logo-svg { width: 160px; height: auto; }
 
         .nav-menu { display: flex; flex-direction: column; gap: 8px; }
 
@@ -74,69 +75,92 @@
             color: #10b981; font-size: 11px; text-align: center; font-weight: 700;
         }
 
-        .main-wrapper { flex: 1; padding: 24px 32px; overflow-y: auto; }
+        .main-wrapper { flex: 1; padding: 20px 16px; overflow-x: hidden; width: 100%; }
 
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .top-header h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-        .top-header p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; }
+        .top-header h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+        .top-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .dashboard { display: grid; grid-template-columns: 1fr 1.1fr; gap: 24px; }
-
-        @media (max-width: 1024px) {
-            body { flex-direction: column; }
-            .sidebar { width: 100%; }
-            .dashboard { grid-template-columns: 1fr; }
-        }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
         .card {
-            background: var(--card-bg); border-radius: 16px; padding: 24px;
-            border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 20px;
+            background: var(--card-bg); border-radius: 16px; padding: 18px;
+            border: 1px solid var(--border); box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 16px;
         }
 
         .form-section-title {
-            font-size: 12px; font-weight: 800; text-transform: uppercase;
-            letter-spacing: 0.6px; color: var(--primary); margin-bottom: 16px;
+            font-size: 11px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--primary); margin-bottom: 14px; display: block;
         }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group.full { grid-column: span 2; }
 
-        label { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
-        input, select { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; outline: none; background: #f8fafc; font-weight: 500; text-transform: uppercase; }
+        label { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        input, select {
+            padding: 10px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 13px; outline: none; background: #f8fafc; font-weight: 600;
+            text-transform: uppercase; width: 100%;
+        }
 
-        .kpi-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
-        .kpi-card { background: #f1f5f9; padding: 14px 10px; border-radius: 12px; text-align: center; }
-        .kpi-card span { font-size: 10px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
-        .kpi-card h3 { font-size: 16px; margin-top: 3px; font-weight: 800; }
+        .kpi-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+        .kpi-card { background: #f1f5f9; padding: 12px 8px; border-radius: 10px; text-align: center; }
+        .kpi-card span { font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .kpi-card h3 { font-size: 14px; margin-top: 2px; font-weight: 800; }
 
-        .total-kpi { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; grid-column: span 3; padding: 20px; border-radius: 14px; text-align: center; }
-        .total-kpi h2 { font-size: 30px; font-weight: 800; }
+        .total-kpi {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white; grid-column: span 2; padding: 16px; border-radius: 12px; text-align: center;
+        }
+        .total-kpi span { opacity: 0.9; font-size: 11px; text-transform: uppercase; font-weight: 600; }
+        .total-kpi h2 { font-size: 26px; font-weight: 800; margin-top: 2px; }
 
-        .chart-box { position: relative; height: 160px; margin-bottom: 20px; display: flex; justify-content: center; }
+        .chart-box { position: relative; height: 150px; margin-bottom: 16px; display: flex; justify-content: center; }
 
+        .table-responsive { width: 100%; overflow-x: auto; }
         .table-results, .data-table { width: 100%; border-collapse: collapse; }
-        .table-results td, .data-table th, .data-table td { padding: 10px 12px; font-size: 12.5px; border-bottom: 1px solid var(--border); text-align: left; }
-        .data-table th { background: #f8fafc; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 11px; }
-        .table-results td.val { text-align: right; font-weight: 600; }
+        .table-results td, .data-table th, .data-table td { padding: 9px 8px; font-size: 12px; border-bottom: 1px solid var(--border); text-align: left; }
+        .data-table th { background: #f8fafc; color: var(--text-muted); font-weight: 700; text-transform: uppercase; font-size: 10px; white-space: nowrap; }
+        .table-results td.val { text-align: right; font-weight: 700; }
 
-        .action-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+        .action-btns { display: flex; gap: 8px; margin-top: 16px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 4px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-danger { background: #fee2e2; color: var(--danger); }
 
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; display: inline-block; }
+        .badge { padding: 4px 6px; border-radius: 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: inline-block; }
         .badge-transito { background: #fef3c7; color: #b45309; }
         .badge-taller { background: #fae8ff; color: #86198f; }
         .badge-disponible { background: #dcfce7; color: #15803d; }
         .badge-vendido { background: #f1f5f9; color: #475569; }
 
-        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
+
+        /* ESTILOS ESPECÍFICOS PARA MÓVIL */
+        @media (max-width: 768px) {
+            body { flex-direction: column; padding-bottom: 80px; }
+            .sidebar {
+                position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 65px;
+                flex-direction: row; padding: 6px 12px; justify-content: space-around;
+                align-items: center; z-index: 1000; border-top: 1px solid rgba(255,255,255,0.1);
+                background: #090d16;
+            }
+            .logo-container, .cloud-badge { display: none; }
+            .nav-menu { flex-direction: row; width: 100%; justify-content: space-around; gap: 0; }
+            .nav-item { flex-direction: column; font-size: 10px; padding: 6px 8px; gap: 3px; text-align: center; border-radius: 8px; }
+            .nav-item span { font-size: 10px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .main-wrapper { padding: 14px 12px; }
+            .form-grid { grid-template-columns: 1fr 1fr; }
+            .top-header h1 { font-size: 16px; }
+            .top-header p { font-size: 11px; }
+            .action-btns { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
@@ -153,22 +177,20 @@
 
     <div class="nav-menu">
         <div class="nav-item active" onclick="switchTab('calculadora', this)">
-            <span>🚗 Calculadora</span>
+            <span>🚗</span><span>Cálculo</span>
         </div>
         <div class="nav-item" onclick="switchTab('historial', this)">
-            <span>📋 Historial Cotizaciones</span>
+            <span>📋</span><span>Historial</span>
         </div>
         <div class="nav-item" onclick="switchTab('inventario', this)">
-            <span>🚘 Inventario de Vehículos</span>
+            <span>🚘</span><span>Stock</span>
         </div>
         <div class="nav-item" onclick="switchTab('reportes', this)">
-            <span>📊 Reportes y Resumen</span>
+            <span>📊</span><span>Reportes</span>
         </div>
     </div>
 
-    <div class="cloud-badge" id="cloud-status">
-        ☁️ Sincronizado en la Nube
-    </div>
+    <div class="cloud-badge">☁️ Nube Activa</div>
 </div>
 
 <div class="main-wrapper">
@@ -178,9 +200,9 @@
         <div class="top-header">
             <div>
                 <h1>CALCULADORA DE IMPORTACIÓN</h1>
-                <p>Calcula todos los costos, impuestos DUCA y gastos para El Salvador</p>
+                <p>Costos, tributos DUCA y gastos para El Salvador</p>
             </div>
-            <button class="btn btn-outline" onclick="limpiarFormulario()">🔄 Nuevo Cálculo</button>
+            <button class="btn btn-outline" style="padding: 6px 10px; font-size: 11px;" onclick="limpiarFormulario()">🔄 Nuevo</button>
         </div>
 
         <div class="dashboard">
@@ -200,7 +222,7 @@
                         <input type="text" id="lote" placeholder="68954095" value="68954095" oninput="calcular()">
                     </div>
                     <div class="form-group">
-                        <label>Precio Subasta (USD)</label>
+                        <label>Precio Subasta ($)</label>
                         <input type="number" id="precio" value="975" oninput="calcular()">
                     </div>
                     <div class="form-group">
@@ -211,7 +233,7 @@
                         </select>
                     </div>
                     <div class="form-group full">
-                        <label>Categoría Arancelaria (DUCA)</label>
+                        <label>Categoría DUCA</label>
                         <select id="categoria" onchange="calcular()">
                             <option value="0.20,0.04">1. Motor <= 1.3 L (DAI 20%, APM 4%)</option>
                             <option value="0.25,0.04">2. Motor 1.4 L - 2.0 L (DAI 25%, APM 4%)</option>
@@ -220,24 +242,23 @@
                             <option value="0.05,0.01">5. Motos <= 250 cc (DAI 5%, APM 1%)</option>
                             <option value="0.05,0.08">6. Motos > 250 cc (DAI 5%, APM 8%)</option>
                             <option value="0.01,0.01">7. Camiones (DAI 1%, APM 1%)</option>
-                            <option value="0.05,0.01">8. Pick-up / Doble cabina (DAI 5%, APM 1%)</option>
-                            <option value="0.05,0.01">9. Paneles (DAI 5%, APM 1%)</option>
+                            <option value="0.05,0.01">8. Pick-up (DAI 5%, APM 1%)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Flete DUCA (USD)</label>
+                        <label>Flete DUCA ($)</label>
                         <input type="number" id="flete" value="1425" oninput="calcular()">
                     </div>
                     <div class="form-group">
-                        <label>Seguro DUCA (USD)</label>
+                        <label>Seguro DUCA ($)</label>
                         <input type="number" id="seguro" value="41.30" step="0.01" oninput="calcular()">
                     </div>
                     <div class="form-group">
-                        <label>Storage / Almacenaje (USD)</label>
+                        <label>Storage ($)</label>
                         <input type="number" id="storage" value="0" oninput="calcular()">
                     </div>
                     <div class="form-group">
-                        <label>Est. Reparación / Taller (USD)</label>
+                        <label>Est. Taller ($)</label>
                         <input type="number" id="reparacion" value="800" oninput="calcular()">
                     </div>
                 </div>
@@ -247,20 +268,16 @@
                 <span class="form-section-title">2. RESUMEN Y RESULTADOS</span>
                 <div class="kpi-container">
                     <div class="total-kpi">
-                        <span>Costo Total Importado + Reparación</span>
+                        <span>Costo Total Importado + Taller</span>
                         <h2 id="kpi-total">$0.00</h2>
                     </div>
                     <div class="kpi-card">
-                        <span>Base CIF (Aduana)</span>
+                        <span>CIF (Aduana)</span>
                         <h3 id="kpi-cif">$0.00</h3>
                     </div>
                     <div class="kpi-card">
-                        <span>Total Impuestos DUCA</span>
+                        <span>Impuestos DUCA</span>
                         <h3 id="kpi-duca">$0.00</h3>
-                    </div>
-                    <div class="kpi-card">
-                        <span>Subasta + Fees (FOB)</span>
-                        <h3 id="kpi-fob">$0.00</h3>
                     </div>
                 </div>
 
@@ -268,21 +285,23 @@
                     <canvas id="graficoGastos"></canvas>
                 </div>
 
-                <table class="table-results">
-                    <tr><td>Buyer Fee Subasta</td><td class="val" id="row-fee">$0.00</td></tr>
-                    <tr><td>Otros Cargos Subasta</td><td class="val" id="row-copart-extra">$195.00</td></tr>
-                    <tr><td>Valor Transacción (FOB)</td><td class="val" id="row-fob">$0.00</td></tr>
-                    <tr><td>Valor en Aduana (CIF)</td><td class="val" id="row-cif">$0.00</td></tr>
-                    <tr><td id="lbl-dai">DAI (25%)</td><td class="val" id="row-dai">$0.00</td></tr>
-                    <tr><td id="lbl-apm">APM (6%)</td><td class="val" id="row-apm">$0.00</td></tr>
-                    <tr><td>IVA (13%)</td><td class="val" id="row-iva">$0.00</td></tr>
-                    <tr><td>AIV - Anticipo IVA (1%)</td><td class="val" id="row-aiv">$0.00</td></tr>
-                    <tr><td>Estimación Reparación</td><td class="val" id="row-reparacion">$0.00</td></tr>
-                </table>
+                <div class="table-responsive">
+                    <table class="table-results">
+                        <tr><td>Buyer Fee Subasta</td><td class="val" id="row-fee">$0.00</td></tr>
+                        <tr><td>Otros Cargos Subasta</td><td class="val" id="row-copart-extra">$195.00</td></tr>
+                        <tr><td>FOB Subasta Total</td><td class="val" id="row-fob">$0.00</td></tr>
+                        <tr><td>CIF Aduana</td><td class="val" id="row-cif">$0.00</td></tr>
+                        <tr><td id="lbl-dai">DAI (25%)</td><td class="val" id="row-dai">$0.00</td></tr>
+                        <tr><td id="lbl-apm">APM (6%)</td><td class="val" id="row-apm">$0.00</td></tr>
+                        <tr><td>IVA (13%)</td><td class="val" id="row-iva">$0.00</td></tr>
+                        <tr><td>AIV - Anticipo (1%)</td><td class="val" id="row-aiv">$0.00</td></tr>
+                        <tr><td>Estimación Taller</td><td class="val" id="row-reparacion">$0.00</td></tr>
+                    </table>
+                </div>
 
                 <div class="action-btns">
                     <button class="btn btn-success" onclick="copiarResumen()">📲 Copiar Resumen</button>
-                    <button class="btn btn-primary" onclick="guardarEnHistorial()">☁️ Guardar en Nube</button>
+                    <button class="btn btn-primary" onclick="guardarEnHistorial()">☁️ Guardar Nube</button>
                 </div>
             </div>
         </div>
@@ -292,26 +311,24 @@
     <div id="historial" class="tab-content">
         <div class="top-header">
             <div>
-                <h1>HISTORIAL DE COTIZACIONES (TIEMPO REAL)</h1>
-                <p>Datos guardados y sincronizados en la nube</p>
+                <h1>HISTORIAL COTIZACIONES</h1>
+                <p>Sincronizado en tiempo real</p>
             </div>
         </div>
         <div class="card">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Vehículo</th>
-                        <th>VIN / Lote</th>
-                        <th>FOB</th>
-                        <th>Impuestos DUCA</th>
-                        <th>Costo Total</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-historial">
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Vehículo</th>
+                            <th>Total</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-historial"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -319,41 +336,37 @@
     <div id="inventario" class="tab-content">
         <div class="top-header">
             <div>
-                <h1>INVENTARIO DE VEHÍCULOS</h1>
-                <p>Sincronización en tiempo real para todos tus dispositivos</p>
+                <h1>INVENTARIO STOCK</h1>
+                <p>Control de unidades y ganancias</p>
             </div>
         </div>
         <div class="card">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Vehículo</th>
-                        <th>VIN</th>
-                        <th>Costo Importado</th>
-                        <th>Precio Venta Esp.</th>
-                        <th>Ganancia</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-inventario">
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Vehículo</th>
+                            <th>Costo</th>
+                            <th>Venta</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-inventario"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <!-- TAB 4: REPORTES -->
     <div id="reportes" class="tab-content">
         <div class="top-header">
-            <div>
-                <h1>REPORTES Y RESUMEN DE OPERACIONES</h1>
-            </div>
+            <div><h1>RESUMEN GENERAL</h1></div>
         </div>
-        <div class="kpi-container" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="kpi-container">
             <div class="kpi-card"><span>Total Cotizaciones</span><h3 id="rep-tot-cot">0</h3></div>
             <div class="kpi-card"><span>Unidades Stock</span><h3 id="rep-tot-inv">0</h3></div>
-            <div class="kpi-card"><span>Inversión Stock</span><h3 id="rep-tot-inv-val">$0.00</h3></div>
-            <div class="kpi-card"><span>Ganancia Proyectada</span><h3 id="rep-tot-gan">$0.00</h3></div>
+            <div class="kpi-card" style="grid-column: span 2;"><span>Inversión en Stock</span><h3 id="rep-tot-inv-val">$0.00</h3></div>
+            <div class="kpi-card" style="grid-column: span 2;"><span>Ganancia Proyectada</span><h3 id="rep-tot-gan">$0.00</h3></div>
         </div>
     </div>
 
@@ -476,7 +489,6 @@
         document.getElementById('kpi-total').innerText = fmt(totalFinal);
         document.getElementById('kpi-cif').innerText = fmt(cif);
         document.getElementById('kpi-duca').innerText = fmt(tributosAduana);
-        document.getElementById('kpi-fob').innerText = fmt(fob);
         document.getElementById('row-fee').innerText = fmt(buyerFee);
         document.getElementById('row-fob').innerText = fmt(fob);
         document.getElementById('row-cif').innerText = fmt(cif);
@@ -498,38 +510,33 @@
                 labels: ['Subasta + Fees', 'Flete/Seguro', 'Impuestos + Gastos'],
                 datasets: [{ data: [fob, fleteSeguro, impuestosGastos], backgroundColor: ['#2563eb', '#3b82f6', '#10b981'], borderWidth: 0 }]
             },
-            options: { responsive: true, maintainAspectRatio: false, cutout: '68%' }
+            options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
         });
     }
 
     function guardarEnHistorial() {
-        db.collection('historial').add(datosUltimoCalculo).then(() => {
-            alert('☁️ Cotización guardada y sincronizada en la Nube');
-        });
+        db.collection('historial').add(datosUltimoCalculo).then(() => alert('☁️ Cotización guardada'));
     }
 
     function cargarHistorial() {
         let tbody = document.getElementById('tabla-historial');
         if(historialData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No hay cotizaciones guardadas.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No hay cotizaciones guardadas.</td></tr>`;
             return;
         }
         tbody.innerHTML = historialData.map((item) => `
             <tr>
                 <td>${item.fecha}</td>
                 <td><strong>${item.vehiculo}</strong></td>
-                <td>${item.vin || 'N/A'}<br><small>Lote: ${item.lote || 'N/A'}</small></td>
-                <td>${fmt(item.fob)}</td>
-                <td>${fmt(item.tributosAduana)}</td>
                 <td><strong>${fmt(item.totalFinal)}</strong></td>
-                <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="pasarAInventario('${item.id}')">➕ Enviar a Inventario</button></td>
+                <td><button class="btn btn-outline" style="padding: 4px; font-size: 10px;" onclick="pasarAInventario('${item.id}')">➕ Stock</button></td>
             </tr>
         `).join('');
     }
 
     function pasarAInventario(docId) {
         let item = historialData.find(i => i.id === docId);
-        let precioVenta = prompt(`PRECIO DE VENTA ESPERADO (USD):`, (item.totalFinal * 1.25).toFixed(2));
+        let precioVenta = prompt(`PRECIO DE VENTA ESPERADO ($):`, (item.totalFinal * 1.25).toFixed(2));
         if(!precioVenta) return;
 
         db.collection('inventario').add({
@@ -539,17 +546,16 @@
             costoTotal: item.totalFinal,
             precioVenta: parseFloat(precioVenta),
             estado: 'Transito'
-        }).then(() => alert('🚘 Unidad agregada al Inventario en Nube'));
+        }).then(() => alert('🚘 Unidad agregada al Inventario'));
     }
 
     function cargarInventario() {
         let tbody = document.getElementById('tabla-inventario');
         if(inventarioData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No hay vehículos en inventario.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No hay vehículos en inventario.</td></tr>`;
             return;
         }
         tbody.innerHTML = inventarioData.map((item) => {
-            let ganancia = item.precioVenta - item.costoTotal;
             let badgeClass = 'badge-transito';
             if(item.estado === 'Taller') badgeClass = 'badge-taller';
             if(item.estado === 'Disponible') badgeClass = 'badge-disponible';
@@ -558,23 +564,12 @@
             return `
                 <tr>
                     <td><strong>${item.vehiculo}</strong></td>
-                    <td>${item.vin}</td>
                     <td>${fmt(item.costoTotal)}</td>
                     <td>${fmt(item.precioVenta)}</td>
-                    <td style="color: ${ganancia >= 0 ? '#10b981' : '#ef4444'}; font-weight: 700;">${fmt(ganancia)}</td>
                     <td><span class="badge ${badgeClass}">${item.estado}</span></td>
-                    <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 11px;" onclick="cambiarEstado('${item.id}', '${item.estado}')">🔄 Estado</button></td>
                 </tr>
             `;
         }).join('');
-    }
-
-    function cambiarEstado(docId, estadoActual) {
-        let nuevo = prompt(`Estado actual: ${estadoActual}\n\n1. Transito\n2. Taller\n3. Disponible\n4. Vendido`);
-        let mapa = {'1':'Transito', '2':'Taller', '3':'Disponible', '4':'Vendido'};
-        if(mapa[nuevo]) {
-            db.collection('inventario').doc(docId).update({ estado: mapa[nuevo] });
-        }
     }
 
     function cargarReportes() {
@@ -590,8 +585,8 @@
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let texto = `📋 *RESUMEN DE COTIZACIÓN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Precio Subasta + Fees:* ${fmt(d.fob)}\n🏛️ *Impuestos Aduana (DUCA):* ${fmt(d.tributosAduana)}\n🔧 *Est. Reparación:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *COSTO TOTAL ESTIMADO:* ${fmt(d.totalFinal)}`;
-        navigator.clipboard.writeText(texto).then(() => alert('📋 Resumen copiado'));
+        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta + Fees:* ${fmt(d.fob)}\n🏛️ *Impuestos DUCA:* ${fmt(d.tributosAduana)}\n🔧 *Est. Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL ESTIMADO:* ${fmt(d.totalFinal)}`;
+        navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
 
     function limpiarFormulario() {
