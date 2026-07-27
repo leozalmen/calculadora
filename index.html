@@ -276,8 +276,8 @@
                         <h2 id="kpi-total">$0.00</h2>
                     </div>
                     <div class="kpi-card">
-                        <span>CIF (Aduana)</span>
-                        <h3 id="kpi-cif">$0.00</h3>
+                        <span>Valor Factura (FOB)</span>
+                        <h3 id="kpi-fob">$0.00</h3>
                     </div>
                     <div class="kpi-card">
                         <span>Impuestos DUCA</span>
@@ -504,7 +504,7 @@
         };
 
         document.getElementById('kpi-total').innerText = fmt(totalFinal);
-        document.getElementById('kpi-cif').innerText = fmt(cif);
+        document.getElementById('kpi-fob').innerText = fmt(fob);
         document.getElementById('kpi-duca').innerText = fmt(tributosAduana);
         
         document.getElementById('row-precio').innerText = fmt(precio);
