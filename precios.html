@@ -192,10 +192,10 @@
             </div>
         </div>
 
-        <!-- Acceso directo dinámico a BidCars con botón fijo -->
+        <!-- Acceso directo dinámico a BidCars -->
         <div class="bidcars-banner">
             <span id="bidcars-banner-text">🌐 Ingresa un lote para abrir su enlace</span>
-            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/lot/1-" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
+            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
         </div>
 
         <!-- Acceso Rápido masivo -->
@@ -257,9 +257,8 @@
 
         <div class="bidcars-banner">
             <span>🌐 Ir directamente a la plataforma de subastas</span>
-        <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/lot/1-" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
+            <a href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir BidCars ↗</a>
         </div>
-
 
         <div class="card">
             <div class="search-box">
@@ -318,11 +317,11 @@
         let bannerText = document.getElementById('bidcars-banner-text');
 
         if(loteVal.length > 0) {
-            let urlFinal = `https://bid.cars/en/lot/${loteVal}/`;
+            let urlFinal = `https://bid.cars/en/lot/1-${loteVal}/`;
             btnDinamico.href = urlFinal;
-            bannerText.innerText = `🌐 Abrir lote #${loteVal} en BidCars`;
+            bannerText.innerText = `🌐 Abrir lote #1-${loteVal} en BidCars`;
         } else {
-            btnDinamico.href = 'https://bid.cars/en/lot/1-';
+            btnDinamico.href = 'https://bid.cars/en/';
             bannerText.innerText = '🌐 Ingresa un lote para abrir su enlace';
         }
     }
@@ -338,7 +337,7 @@
         }
 
         contenedor.innerHTML = numeros.map(lote => `
-            <a href="https://bid.cars/en/lot/${lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+            <a href="https://bid.cars/en/lot/1-${lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
                 🌐 Lote ${lote} ↗
             </a>
         `).join('');
@@ -392,7 +391,7 @@
             <tr>
                 <td><strong>${item.anio}</strong> - ${item.modelo}</td>
                 <td>
-                    <a href="https://bid.cars/en/lot/${item.lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+                    <a href="https://bid.cars/en/lot/1-${item.lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
                         🌐 ${item.lote} ↗
                     </a>
                 </td>
