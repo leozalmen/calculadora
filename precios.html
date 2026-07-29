@@ -195,7 +195,7 @@
         <!-- Acceso directo dinámico a BidCars -->
         <div class="bidcars-banner">
             <span id="bidcars-banner-text">🌐 Ingresa un lote para abrir su enlace</span>
-            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800; opacity: 0.6; pointer-events: none;">Abrir ↗</a>
+            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
         </div>
 
         <!-- Acceso Rápido masivo -->
@@ -319,13 +319,9 @@
         if(loteVal.length > 0) {
             let urlFinal = `https://bid.cars/en/lot/1-${loteVal}/`;
             btnDinamico.href = urlFinal;
-            btnDinamico.style.opacity = '1';
-            btnDinamico.style.pointerEvents = 'auto';
             bannerText.innerText = `🌐 Abrir lote #1-${loteVal} en BidCars`;
         } else {
             btnDinamico.href = 'https://bid.cars/en/';
-            btnDinamico.style.opacity = '0.6';
-            btnDinamico.style.pointerEvents = 'none';
             bannerText.innerText = '🌐 Ingresa un lote para abrir su enlace';
         }
     }
