@@ -192,10 +192,10 @@
             </div>
         </div>
 
-        <!-- Acceso directo dinámico a BidCars -->
+        <!-- Acceso directo dinámico a BidCars con botón fijo -->
         <div class="bidcars-banner">
             <span id="bidcars-banner-text">🌐 Ingresa un lote para abrir su enlace</span>
-            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
+            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/lot/1-" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
         </div>
 
         <!-- Acceso Rápido masivo -->
@@ -317,11 +317,11 @@
         let bannerText = document.getElementById('bidcars-banner-text');
 
         if(loteVal.length > 0) {
-            let urlFinal = `https://bid.cars/en/lot/1-${loteVal}/`;
+            let urlFinal = `https://bid.cars/en/lot/${loteVal}/`;
             btnDinamico.href = urlFinal;
-            bannerText.innerText = `🌐 Abrir lote #1-${loteVal} en BidCars`;
+            bannerText.innerText = `🌐 Abrir lote #${loteVal} en BidCars`;
         } else {
-            btnDinamico.href = 'https://bid.cars/en/';
+            btnDinamico.href = 'https://bid.cars/en/lot/1-';
             bannerText.innerText = '🌐 Ingresa un lote para abrir su enlace';
         }
     }
@@ -337,7 +337,7 @@
         }
 
         contenedor.innerHTML = numeros.map(lote => `
-            <a href="https://bid.cars/en/lot/1-${lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+            <a href="https://bid.cars/en/lot/${lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
                 🌐 Lote ${lote} ↗
             </a>
         `).join('');
@@ -391,7 +391,7 @@
             <tr>
                 <td><strong>${item.anio}</strong> - ${item.modelo}</td>
                 <td>
-                    <a href="https://bid.cars/en/lot/1-${item.lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+                    <a href="https://bid.cars/en/lot/${item.lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
                         🌐 ${item.lote} ↗
                     </a>
                 </td>
@@ -399,8 +399,8 @@
                 <td><span class="badge-limit">${item.tope ? '$' + item.tope.toLocaleString() + ' USD' : 'N/D'}</span></td>
                 <td>
                     <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                        <button class="btn btn-warning btn-sm" onclick="cargarEdicion('${item.id}')">✏️ Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="borrarLote('${item.id}')">🗑️ Borrar</button>
+                        <button class="btn btn-warning btn-sm" onclick="cargarEdicion('${item.id}')" type="button">✏️ Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="borrarLote('${item.id}')" type="button">🗑️ Borrar</button>
                     </div>
                 </td>
             </tr>
