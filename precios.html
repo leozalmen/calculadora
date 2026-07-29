@@ -192,12 +192,6 @@
             </div>
         </div>
 
-        <!-- Acceso directo dinámico a BidCars -->
-        <div class="bidcars-banner">
-            <span id="bidcars-banner-text">🌐 Ingresa un lote para abrir su enlace</span>
-            <a id="btn-abrir-lote-dinamico" href="https://bid.cars/en/" target="_blank" class="btn btn-sm btn-success" style="background: white; color: #0369a1; font-weight: 800;">Abrir ↗</a>
-        </div>
-
         <!-- Acceso Rápido masivo -->
         <div class="card" style="max-width: 700px; margin: 0 auto 16px auto; background: #f0f9ff; border-color: #bae6fd;">
             <span class="form-section-title" style="color: #0369a1;">🚀 Acceso Rápido: Pega una lista de lotes</span>
@@ -218,7 +212,7 @@
                 </div>
                 <div class="form-group">
                     <label>Número de Lote</label>
-                    <input type="text" id="veh-lote" placeholder="Ej. 55042316" oninput="actualizarEnlaceDinamico()">
+                    <input type="text" id="veh-lote" placeholder="Ej. 55042316">
                 </div>
                 <div class="form-group full">
                     <label>Marca y Modelo</label>
@@ -311,36 +305,27 @@
         if(element) element.classList.add('active');
     }
 
-    function actualizarEnlaceDinamico() {
-        let loteVal = document.getElementById('veh-lote').value.trim();
-        let btnDinamico = document.getElementById('btn-abrir-lote-dinamico');
-        let bannerText = document.getElementById('bidcars-banner-text');
-
-        if(loteVal.length > 0) {
-            let urlFinal = `https://bid.cars/en/lot/1-${loteVal}/`;
-            btnDinamico.href = urlFinal;
-            bannerText.innerText = `🌐 Abrir lote #1-${loteVal} en BidCars`;
-        } else {
-            btnDinamico.href = 'https://bid.cars/en/';
-            bannerText.innerText = '🌐 Ingresa un lote para abrir su enlace';
-        }
-    }
-
     function procesarLotesPegados() {
         let texto = document.getElementById('lista-lotes-pegados').value;
         let contenedor = document.getElementById('contenedor-botones-masivos');
-        let numeros = texto.match(/\d+/g);
+        
+        let lineas = texto.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
 
-        if (!numeros || numeros.length === 0) {
+        if (lineas.length === 0) {
             contenedor.innerHTML = '';
             return;
         }
 
-        contenedor.innerHTML = numeros.map(lote => `
-            <a href="https://bid.cars/en/lot/1-${lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
-                🌐 Lote ${lote} ↗
-            </a>
-        `).join('');
+        contenedor.innerHTML = lineas.map(loteCrudo => {
+            let loteClean = loteCrudo.replace(/^1-/, '');
+            if(!loteClean) return '';
+            
+            return `
+                <a href="https://bid.cars/en/lot/1-${loteClean}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+                    🌐 Lote ${loteClean} ↗
+                </a>
+            `;
+        }).join('');
     }
 
     function guardarLote() {
@@ -432,7 +417,6 @@
         document.getElementById('btn-guardar-actualizar').innerText = '💾 Actualizar Referencia';
         document.getElementById('btn-cancelar-edicion').style.display = 'inline-flex';
 
-        actualizarEnlaceDinamico();
         switchTab('nuevo-lote', document.querySelectorAll('.nav-item')[0]);
     }
 
@@ -447,8 +431,6 @@
         document.getElementById('form-title-label').innerText = 'DATOS DEL VEHÍCULO Y VALORES';
         document.getElementById('btn-guardar-actualizar').innerText = '💾 Guardar Referencia';
         document.getElementById('btn-cancelar-edicion').style.display = 'none';
-
-        actualizarEnlaceDinamico();
     }
 
     function borrarLote(id) {
