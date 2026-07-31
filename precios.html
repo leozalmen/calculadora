@@ -36,42 +36,84 @@
         }
 
         .sidebar {
-            width: 260px;
+            width: 280px;
             background: var(--sidebar-bg);
             color: white;
-            padding: 24px 16px;
+            padding: 20px 12px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 16px;
             flex-shrink: 0;
+            position: relative;
         }
 
         .logo-container {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
             text-align: center;
-            padding-bottom: 16px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             color: #38bdf8;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
 
-        .nav-menu { display: flex; flex-direction: column; gap: 8px; }
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; }
 
         .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 16px; border-radius: 10px; font-size: 14px;
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 8px; font-size: 13px;
             font-weight: 500; color: #94a3b8; cursor: pointer; transition: all 0.2s;
         }
 
         .nav-item.active { background: var(--primary); color: white; font-weight: 600; }
         .nav-item:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #f1f5f9; }
 
+        .sidebar-divider {
+            font-size: 10px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #64748b; margin-top: 8px; padding-left: 4px;
+        }
+
+        .sidebar-lotes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: calc(100vh - 280px);
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .sidebar-lote-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+            padding: 6px 8px;
+            gap: 6px;
+        }
+
+        .sidebar-lote-item a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .sidebar-lote-item a:hover { text-decoration: underline; }
+
         .cloud-badge {
-            margin-top: auto; padding: 10px; border-radius: 8px;
+            margin-top: auto; padding: 8px; border-radius: 6px;
             background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #10b981; font-size: 11px; text-align: center; font-weight: 700;
+            color: #10b981; font-size: 10px; text-align: center; font-weight: 700;
         }
 
         .main-wrapper { flex: 1; padding: 20px 16px; overflow-x: hidden; width: 100%; }
@@ -154,12 +196,11 @@
         @media (max-width: 768px) {
             body { flex-direction: column; padding-bottom: 80px; }
             .sidebar {
-                position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: 65px;
-                flex-direction: row; padding: 6px 12px; justify-content: space-around;
-                align-items: center; z-index: 1000; border-top: 1px solid rgba(255,255,255,0.1);
-                background: #090d16;
+                position: fixed; bottom: 0; left: 0; right: 0; width: 100%; height: auto; max-height: 250px;
+                flex-direction: column; padding: 8px 12px; z-index: 1000; border-top: 1px solid rgba(255,255,255,0.1);
+                background: #090d16; gap: 8px;
             }
-            .logo-container, .cloud-badge { display: none; }
+            .logo-container, .cloud-badge, .sidebar-divider, .sidebar-lotes-container { display: none; }
             .nav-menu { flex-direction: row; width: 100%; justify-content: space-around; gap: 0; }
             .nav-item { flex-direction: column; font-size: 10px; padding: 6px 8px; gap: 3px; text-align: center; border-radius: 8px; }
             .form-grid { grid-template-columns: 1fr; }
@@ -179,6 +220,12 @@
             <span>📋</span><span>Historial / Precios</span>
         </div>
     </div>
+    
+    <div class="sidebar-divider">Lotes Pegados</div>
+    <div class="sidebar-lotes-container" id="sidebar-lotes-lista">
+        <div style="color: #64748b; font-size: 11px; text-align: center; padding: 10px;">Sin lotes pegados</div>
+    </div>
+
     <div class="cloud-badge">☁️ Sincronizado</div>
 </div>
 
@@ -194,12 +241,16 @@
 
         <!-- Acceso Rápido masivo -->
         <div class="card" style="max-width: 700px; margin: 0 auto 16px auto; background: #f0f9ff; border-color: #bae6fd;">
-            <span class="form-section-title" style="color: #0369a1;">🚀 Acceso Rápido: Pega una lista de lotes</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <span class="form-section-title" style="color: #0369a1; margin-bottom: 0;">🚀 Acceso Rápido: Pega una lista de lotes</span>
+                <button type="button" class="btn btn-danger btn-sm" onclick="limpiarListaPegada()" style="font-size: 10px; padding: 3px 8px;">🗑️ Limpiar Todo</button>
+            </div>
             <div class="form-group full" style="margin-bottom: 10px;">
                 <label>Pega aquí varios números de lote (separados por espacio, comas o saltos de línea)</label>
-                <textarea id="lista-lotes-pegados" rows="2" placeholder="Ej. 55042316, 58492011" oninput="procesarLotesPegados()"></textarea>
+                <textarea id="lista-lotes-pegados" rows="3" placeholder="Ej. 55042316, 58492011" oninput="procesarLotesPegados()"></textarea>
             </div>
-            <div id="contenedor-botones-masivos" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+            <div id="contenedor-botones-masivos" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; max-height: 220px; overflow-y: auto;"></div>
+            <button class="btn btn-success btn-sm" style="width: 100%; font-weight: 700;" onclick="guardarLotesMasivos()">📥 Guardar Lotes</button>
         </div>
 
         <div class="card" style="max-width: 700px; margin: 0 auto;">
@@ -292,6 +343,7 @@
     const db = firebase.firestore();
 
     let listaLotes = [];
+    let lotesPegadosGlobal = [];
 
     db.collection('historial_subastas').orderBy('anio', 'desc').onSnapshot(snapshot => {
         listaLotes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -306,26 +358,94 @@
     }
 
     function procesarLotesPegados() {
-        let texto = document.getElementById('lista-lotes-pegados').value;
-        let contenedor = document.getElementById('contenedor-botones-masivos');
+        let textarea = document.getElementById('lista-lotes-pegados');
+        if (!textarea) return;
         
+        let texto = textarea.value;
         let lineas = texto.split(/[\n,]+/).map(l => l.trim()).filter(l => l.length > 0);
+        
+        lotesPegadosGlobal = lineas.map(loteCrudo => loteCrudo.replace(/^1-/, '')).filter(l => l.length > 0);
+        
+        renderizarContenedoresMasivos();
+    }
 
-        if (lineas.length === 0) {
-            contenedor.innerHTML = '';
+    function renderizarContenedoresMasivos() {
+        let contenedorPrincipal = document.getElementById('contenedor-botones-masivos');
+        let sidebarLista = document.getElementById('sidebar-lotes-lista');
+
+        if (!contenedorPrincipal || !sidebarLista) return;
+
+        if (lotesPegadosGlobal.length === 0) {
+            contenedorPrincipal.innerHTML = '';
+            sidebarLista.innerHTML = `<div style="color: #64748b; font-size: 11px; text-align: center; padding: 10px;">Sin lotes pegados</div>`;
             return;
         }
 
-        contenedor.innerHTML = lineas.map(loteCrudo => {
-            let loteClean = loteCrudo.replace(/^1-/, '');
-            if(!loteClean) return '';
-            
-            return `
-                <a href="https://bid.cars/en/lot/1-${loteClean}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
+        contenedorPrincipal.innerHTML = lotesPegadosGlobal.map((loteClean, index) => `
+            <div style="display: inline-flex; align-items: center; background: #10b981; border-radius: 6px; overflow: hidden; margin-bottom: 4px;">
+                <a href="https://bid.cars/en/lot/1-${loteClean}/" target="_blank" style="color: white; padding: 4px 8px; text-decoration: none; font-size: 10px; font-weight: 700;">
                     🌐 Lote ${loteClean} ↗
                 </a>
-            `;
-        }).join('');
+                <button type="button" onclick="eliminarLotePegado(${index})" style="background: #059669; color: white; border: none; padding: 4px 6px; cursor: pointer; font-size: 10px; font-weight: 800; border-left: 1px solid rgba(255,255,255,0.2);">✕</button>
+            </div>
+        `).join('');
+
+        sidebarLista.innerHTML = lotesPegadosGlobal.map((loteClean, index) => `
+            <div class="sidebar-lote-item">
+                <a href="https://bid.cars/en/lot/1-${loteClean}/" target="_blank" title="Lote ${loteClean}">
+                    🌐 ${loteClean} ↗
+                </a>
+                <button type="button" onclick="eliminarLotePegado(${index})" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: none; border-radius: 4px; width: 18px; height: 18px; cursor: pointer; font-size: 10px; font-weight: 800; display: flex; align-items: center; justify-content: center;" title="Eliminar">✕</button>
+            </div>
+        `).join('');
+    }
+
+    function eliminarLotePegado(index) {
+        lotesPegadosGlobal.splice(index, 1);
+        let textarea = document.getElementById('lista-lotes-pegados');
+        if (textarea) {
+            textarea.value = lotesPegadosGlobal.join(', ');
+        }
+        renderizarContenedoresMasivos();
+    }
+
+    function limpiarListaPegada() {
+        lotesPegadosGlobal = [];
+        let textarea = document.getElementById('lista-lotes-pegados');
+        if (textarea) {
+            textarea.value = '';
+        }
+        renderizarContenedoresMasivos();
+    }
+
+    function guardarLotesMasivos() {
+        if(lotesPegadosGlobal.length === 0) {
+            alert('Por favor pega al menos un número de lote en el campo de Acceso Rápido.');
+            return;
+        }
+
+        let batch = db.batch();
+        let fechaHoy = new Date().toLocaleDateString();
+
+        lotesPegadosGlobal.forEach(loteNum => {
+            let docRef = db.collection('historial_subastas').doc();
+            batch.set(docRef, {
+                anio: 0,
+                lote: loteNum,
+                modelo: `LOTE BIDCARS (${fechaHoy})`,
+                precio: 0,
+                tope: 0,
+                timestamp: Date.now()
+            });
+        });
+
+        batch.commit().then(() => {
+            alert(`✅ Se han guardado ${lotesPegadosGlobal.length} lotes correctamente en el historial.`);
+            limpiarListaPegada();
+            switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
+        }).catch(err => {
+            alert('Error al guardar los lotes: ' + err.message);
+        });
     }
 
     function guardarLote() {
@@ -367,6 +487,8 @@
 
     function renderizarTabla(lotes) {
         let tbody = document.getElementById('tabla-lotes');
+        if(!tbody) return;
+
         if(lotes.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No hay registros de subasta.</td></tr>`;
             return;
@@ -374,7 +496,7 @@
 
         tbody.innerHTML = lotes.map(item => `
             <tr>
-                <td><strong>${item.anio}</strong> - ${item.modelo}</td>
+                <td><strong>${item.anio || 'N/D'}</strong> - ${item.modelo}</td>
                 <td>
                     <a href="https://bid.cars/en/lot/1-${item.lote}/" target="_blank" class="btn btn-success btn-sm" style="font-weight: 700;">
                         🌐 ${item.lote} ↗
@@ -393,7 +515,9 @@
     }
 
     function filtrarLotes() {
-        let texto = document.getElementById('input-busqueda').value.toLowerCase();
+        let inputBusqueda = document.getElementById('input-busqueda');
+        if(!inputBusqueda) return;
+        let texto = inputBusqueda.value.toLowerCase();
         let filtradas = listaLotes.filter(item => {
             return (item.modelo && item.modelo.toLowerCase().includes(texto)) ||
                    (item.lote && item.lote.toLowerCase().includes(texto)) ||
