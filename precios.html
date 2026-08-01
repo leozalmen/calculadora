@@ -202,9 +202,11 @@
         .btn-warning:hover { background: #d97706; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #dc2626; }
-        .btn-sm { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
+        .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 6px; }
 
-        .search-box { margin-bottom: 14px; display: flex; gap: 8px; }
+        .search-container { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+        .search-box { flex: 1; min-width: 200px; }
+        
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
         .badge-limit { font-weight: 700; color: #b45309; background: #fffbeb; padding: 3px 6px; border-radius: 6px; display: inline-block; }
@@ -334,8 +336,16 @@
         </div>
 
         <div class="card">
-            <div class="search-box">
-                <input type="text" id="input-busqueda" placeholder="🔍 Escribe para buscar por modelo, año, lote..." oninput="filtrarLotes()">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="input-busqueda" placeholder="🔍 Escribe para buscar por modelo, año, lote..." oninput="filtrarLotes()">
+                </div>
+                <button type="button" class="btn btn-warning btn-sm" id="btn-filtro-repetidos" onclick="toggleFiltroRepetidos()" style="font-weight: 700; white-space: nowrap;">
+                    🧹 Ocultar repetidos (mantener uno)
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTodosLosDuplicadosBaseDatos()" style="font-weight: 700; white-space: nowrap;" title="Borra permanentemente todas las copias duplicadas de la BD">
+                    🗑️ Borrar duplicados de BD
+                </button>
             </div>
 
             <div class="table-responsive">
@@ -372,10 +382,11 @@
 
     let listaLotes = [];
     let lotesPegadosGlobal = [];
+    let soloUnicosActivo = false;
 
     db.collection('historial_subastas').orderBy('anio', 'desc').onSnapshot(snapshot => {
         listaLotes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        renderizarTabla(listaLotes);
+        filtrarLotes();
     });
 
     function switchTab(tabId, element) {
@@ -535,6 +546,49 @@
         }
     }
 
+    function toggleFiltroRepetidos() {
+        soloUnicosActivo = !soloUnicosActivo;
+        let btn = document.getElementById('btn-filtro-repetidos');
+        if (soloUnicosActivo) {
+            btn.style.background = '#0284c7';
+            btn.style.color = '#fff';
+            btn.innerText = '✅ Mostrando único por lote';
+        } else {
+            btn.style.background = '';
+            btn.style.color = '';
+            btn.innerText = '🧹 Ocultar repetidos (mantener uno)';
+        }
+        filtrarLotes();
+    }
+
+    function filtrarLotes() {
+        let inputBusqueda = document.getElementById('input-busqueda');
+        if(!inputBusqueda) return;
+        let texto = inputBusqueda.value.toLowerCase();
+
+        let filtradas = listaLotes.filter(item => {
+            return (item.modelo && item.modelo.toLowerCase().includes(texto)) ||
+                   (item.lote && item.lote.toLowerCase().includes(texto)) ||
+                   (item.anio && item.anio.toString().includes(texto));
+        });
+
+        if (soloUnicosActivo) {
+            let vistos = new Set();
+            filtradas = filtradas.filter(item => {
+                let numeroLote = item.lote ? item.lote.trim() : '';
+                if (!numeroLote) return true;
+                if (vistos.has(numeroLote)) {
+                    return false;
+                } else {
+                    vistos.add(numeroLote);
+                    return true;
+                }
+            });
+        }
+
+        renderizarTabla(filtradas);
+    }
+
     function renderizarTabla(lotes) {
         let tbody = document.getElementById('tabla-lotes');
         if(!tbody) return;
@@ -589,16 +643,46 @@
         });
     }
 
-    function filtrarLotes() {
-        let inputBusqueda = document.getElementById('input-busqueda');
-        if(!inputBusqueda) return;
-        let texto = inputBusqueda.value.toLowerCase();
-        let filtradas = listaLotes.filter(item => {
-            return (item.modelo && item.modelo.toLowerCase().includes(texto)) ||
-                   (item.lote && item.lote.toLowerCase().includes(texto)) ||
-                   (item.anio && item.anio.toString().includes(texto));
+    function eliminarTodosLosDuplicadosBaseDatos() {
+        if (!confirm('¿Estás seguro de eliminar permanentemente todas las copias repetidas de los lotes en la base de datos, conservando únicamente un registro por número de lote?')) {
+            return;
+        }
+
+        let vistos = new Set();
+        let idsAEliminar = [];
+
+        // Ordenamos para mantener de preferencia el que tenga precio mayor o el más reciente
+        let copiaLista = [...listaLotes].sort((a, b) => (b.precio || 0) - (a.precio || 0));
+
+        copiaLista.forEach(item => {
+            let numLote = item.lote ? item.lote.trim() : '';
+            if (!numLote) return;
+            if (vistos.has(numLote)) {
+                idsAEliminar.push(item.id);
+            } else {
+                vistos.add(numLote);
+            }
         });
-        renderizarTabla(filtradas);
+
+        if (idsAEliminar.length === 0) {
+            alert('No se encontraron lotes duplicados en la base de datos.');
+            return;
+        }
+
+        let batch = db.batch();
+        let contador = 0;
+
+        idsAEliminar.forEach(id => {
+            let ref = db.collection('historial_subastas').doc(id);
+            batch.delete(ref);
+            contador++;
+        });
+
+        batch.commit().then(() => {
+            alert(`¡Se han eliminado ${contador} registros duplicados exitosamente!`);
+        }).catch(err => {
+            alert('Error al eliminar duplicados: ' + err.message);
+        });
     }
 
     function cargarEdicion(id) {
