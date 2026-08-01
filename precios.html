@@ -181,7 +181,6 @@
         .search-box { margin-bottom: 14px; display: flex; gap: 8px; }
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
-        .badge-price { font-weight: 700; color: #047857; background: #ecfdf5; padding: 3px 6px; border-radius: 6px; display: inline-block; }
         .badge-limit { font-weight: 700; color: #b45309; background: #fffbeb; padding: 3px 6px; border-radius: 6px; display: inline-block; }
 
         .bidcars-banner {
@@ -502,7 +501,12 @@
                         🌐 ${item.lote} ↗
                     </a>
                 </td>
-                <td><span class="badge-price">$${item.precio.toLocaleString()} USD</span></td>
+                <td>
+                    <div style="display: flex; gap: 4px; align-items: center;">
+                        <input type="number" id="quick-price-${item.id}" value="${item.precio || 0}" style="width: 80px; padding: 4px 6px; font-size: 11px;">
+                        <button class="btn btn-success btn-sm" onclick="actualizarPrecioRapido('${item.id}')" type="button">OK</button>
+                    </div>
+                </td>
                 <td><span class="badge-limit">${item.tope ? '$' + item.tope.toLocaleString() + ' USD' : 'N/D'}</span></td>
                 <td>
                     <div style="display: flex; gap: 4px; flex-wrap: wrap;">
@@ -512,6 +516,23 @@
                 </td>
             </tr>
         `).join('');
+    }
+
+    function actualizarPrecioRapido(id) {
+        let inputVal = document.getElementById(`quick-price-${id}`).value;
+        let nuevoPrecio = Number(inputVal);
+
+        db.collection('historial_subastas').doc(id).update({
+            precio: nuevoPrecio
+        }).then(() => {
+            // Feedback visual rápido
+            let btn = event.target;
+            let originalText = btn.innerText;
+            btn.innerText = '✔️';
+            setTimeout(() => btn.innerText = originalText, 1000);
+        }).catch(err => {
+            alert('Error al actualizar precio: ' + err.message);
+        });
     }
 
     function filtrarLotes() {
