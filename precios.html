@@ -272,14 +272,14 @@
                     <label>Precio Final Subastado ($ USD)</label>
                     <div class="input-with-symbol">
                         <span>$</span>
-                        <input type="number" step="any" id="veh-precio" placeholder="0.00">
+                        <input type="text" id="veh-precio" placeholder="0" oninput="formatearInputMiles(this)">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Tu Tope / Puja Máxima Ideal ($ USD)</label>
                     <div class="input-with-symbol">
                         <span>$</span>
-                        <input type="number" step="any" id="veh-tope" placeholder="0.00">
+                        <input type="text" id="veh-tope" placeholder="0" oninput="formatearInputMiles(this)">
                     </div>
                 </div>
             </div>
@@ -354,6 +354,20 @@
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         if(element) element.classList.add('active');
+    }
+
+    function formatearInputMiles(input) {
+        let valorLimpio = input.value.replace(/\D/g, '');
+        if (valorLimpio === '') {
+            input.value = '';
+            return;
+        }
+        input.value = Number(valorLimpio).toLocaleString('en-US');
+    }
+
+    function obtenerValorLimpio(id) {
+        let val = document.getElementById(id).value;
+        return Number(val.replace(/,/g, '')) || 0;
     }
 
     function procesarLotesPegados() {
@@ -452,10 +466,10 @@
         let anio = document.getElementById('veh-anio').value.trim();
         let lote = document.getElementById('veh-lote').value.trim();
         let modelo = document.getElementById('veh-modelo').value.trim();
-        let precio = document.getElementById('veh-precio').value.trim();
-        let tope = document.getElementById('veh-tope').value.trim();
+        let precio = obtenerValorLimpio('veh-precio');
+        let tope = obtenerValorLimpio('veh-tope');
 
-        if(!anio || !modelo || !lote || !precio) {
+        if(!anio || !modelo || !lote) {
             alert('Por favor complete los campos obligatorios.');
             return;
         }
@@ -464,8 +478,8 @@
             anio: Number(anio),
             lote,
             modelo: modelo.toUpperCase(),
-            precio: Number(precio),
-            tope: tope ? Number(tope) : 0,
+            precio: precio,
+            tope: tope,
             timestamp: Date.now()
         };
 
@@ -503,11 +517,14 @@
                 </td>
                 <td>
                     <div style="display: flex; gap: 4px; align-items: center;">
-                        <input type="number" id="quick-price-${item.id}" value="${item.precio || 0}" style="width: 80px; padding: 4px 6px; font-size: 11px;">
+                        <div class="input-with-symbol" style="width: 100px;">
+                            <span>$</span>
+                            <input type="text" id="quick-price-${item.id}" value="${item.precio ? Number(item.precio).toLocaleString('en-US') : 0}" style="padding: 4px 6px 4px 20px; font-size: 11px;" oninput="formatearInputMiles(this)">
+                        </div>
                         <button class="btn btn-success btn-sm" onclick="actualizarPrecioRapido('${item.id}')" type="button">OK</button>
                     </div>
                 </td>
-                <td><span class="badge-limit">${item.tope ? '$' + item.tope.toLocaleString() + ' USD' : 'N/D'}</span></td>
+                <td><span class="badge-limit">${item.tope ? '$' + Number(item.tope).toLocaleString('en-US') + ' USD' : 'N/D'}</span></td>
                 <td>
                     <div style="display: flex; gap: 4px; flex-wrap: wrap;">
                         <button class="btn btn-warning btn-sm" onclick="cargarEdicion('${item.id}')" type="button">✏️ Editar</button>
@@ -520,12 +537,11 @@
 
     function actualizarPrecioRapido(id) {
         let inputVal = document.getElementById(`quick-price-${id}`).value;
-        let nuevoPrecio = Number(inputVal);
+        let nuevoPrecio = Number(inputVal.replace(/,/g, '')) || 0;
 
         db.collection('historial_subastas').doc(id).update({
             precio: nuevoPrecio
         }).then(() => {
-            // Feedback visual rápido
             let btn = event.target;
             let originalText = btn.innerText;
             btn.innerText = '✔️';
@@ -555,8 +571,8 @@
         document.getElementById('veh-anio').value = item.anio;
         document.getElementById('veh-lote').value = item.lote;
         document.getElementById('veh-modelo').value = item.modelo;
-        document.getElementById('veh-precio').value = item.precio;
-        document.getElementById('veh-tope').value = item.tope || '';
+        document.getElementById('veh-precio').value = item.precio ? Number(item.precio).toLocaleString('en-US') : '';
+        document.getElementById('veh-tope').value = item.tope ? Number(item.tope).toLocaleString('en-US') : '';
 
         document.getElementById('form-title-label').innerText = 'EDITAR REFERENCIA DE SUBASTA';
         document.getElementById('btn-guardar-actualizar').innerText = '💾 Actualizar Referencia';
