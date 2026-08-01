@@ -35,6 +35,32 @@
             padding-bottom: 90px;
         }
 
+        /* Notificación flotante de guardado */
+        #toast-guardado {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        #toast-guardado.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .sidebar {
             width: 280px;
             background: var(--sidebar-bg);
@@ -209,6 +235,9 @@
 </head>
 <body>
 
+<!-- Ventana flotante de aviso -->
+<div id="toast-guardado">Guardado ✅</div>
+
 <div class="sidebar">
     <div class="logo-container">Historial de precios</div>
     <div class="nav-menu">
@@ -370,6 +399,14 @@
         return Number(val.replace(/,/g, '')) || 0;
     }
 
+    function mostrarToast() {
+        let toast = document.getElementById('toast-guardado');
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 1500);
+    }
+
     function procesarLotesPegados() {
         let textarea = document.getElementById('lista-lotes-pegados');
         if (!textarea) return;
@@ -453,7 +490,7 @@
         });
 
         batch.commit().then(() => {
-            alert(`✅ Se han guardado ${lotesPegadosGlobal.length} lotes correctamente en el historial.`);
+            mostrarToast();
             limpiarListaPegada();
             switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
         }).catch(err => {
@@ -485,13 +522,13 @@
 
         if(editId) {
             db.collection('historial_subastas').doc(editId).update(data).then(() => {
-                alert('✅ Referencia actualizada correctamente');
+                mostrarToast();
                 limpiarFormulario();
                 switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
             });
         } else {
             db.collection('historial_subastas').add(data).then(() => {
-                alert('✅ Referencia guardada correctamente');
+                mostrarToast();
                 limpiarFormulario();
                 switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
             });
@@ -542,6 +579,7 @@
         db.collection('historial_subastas').doc(id).update({
             precio: nuevoPrecio
         }).then(() => {
+            mostrarToast();
             let btn = event.target;
             let originalText = btn.innerText;
             btn.innerText = '✔️';
