@@ -521,7 +521,7 @@
                             <span>$</span>
                             <input type="text" id="quick-price-${item.id}" value="${item.precio ? Number(item.precio).toLocaleString('en-US') : 0}" style="padding: 4px 6px 4px 20px; font-size: 11px;" oninput="formatearInputMiles(this)">
                         </div>
-                        <button class="btn btn-success btn-sm" onclick="actualizarPrecioRapido('${item.id}')" type="button">OK</button>
+                        <button class="btn btn-success btn-sm" onclick="actualizarPrecioRapido('${item.id}', event)" type="button">OK</button>
                     </div>
                 </td>
                 <td><span class="badge-limit">${item.tope ? '$' + Number(item.tope).toLocaleString('en-US') + ' USD' : 'N/D'}</span></td>
@@ -535,7 +535,7 @@
         `).join('');
     }
 
-    function actualizarPrecioRapido(id) {
+    function actualizarPrecioRapido(id, event) {
         let inputVal = document.getElementById(`quick-price-${id}`).value;
         let nuevoPrecio = Number(inputVal.replace(/,/g, '')) || 0;
 
