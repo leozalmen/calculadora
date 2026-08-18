@@ -100,12 +100,56 @@
         .form-group { display: flex; flex-direction: column; }
         .form-group.full { grid-column: span 2; }
 
-        label { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
-        input, select {
-            padding: 10px; border: 1px solid var(--border); border-radius: 8px;
-            font-size: 13px; outline: none; background: #f8fafc; font-weight: 600;
-            text-transform: uppercase; width: 100%;
+        label { 
+            font-size: 10px; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            margin-bottom: 4px; 
+            text-transform: uppercase; 
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
+        label .currency-badge {
+            background: var(--primary);
+            color: white;
+            font-size: 8px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper .currency-symbol {
+            position: absolute;
+            left: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 14px;
+            pointer-events: none;
+        }
+        .input-wrapper input {
+            padding-left: 28px;
+            width: 100%;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            background: #f8fafc;
+            font-weight: 600;
+            text-transform: uppercase;
+            width: 100%;
+        }
+        .input-wrapper input {
+            padding-left: 28px;
+        }
+        select option { text-transform: none; }
 
         .kpi-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
         .kpi-card { background: #f1f5f9; padding: 12px 8px; border-radius: 10px; text-align: center; }
@@ -146,6 +190,96 @@
 
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
+        /* ===== ESTILOS MEJORADOS PARA EL SELECTOR DE UBICACIÓN ===== */
+        .location-section {
+            background: #f0f7ff;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 6px;
+        }
+        .location-section .section-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .location-section .section-label span {
+            background: var(--primary);
+            color: white;
+            padding: 0 8px;
+            border-radius: 4px;
+            font-size: 9px;
+        }
+        .location-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .location-selector select {
+            flex: 2;
+            min-width: 180px;
+            background: white;
+            text-transform: none;
+            font-weight: 500;
+        }
+        .location-selector .btn-location {
+            padding: 10px 16px;
+            font-size: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-location.apply {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-location.apply:hover {
+            background: var(--primary-hover);
+        }
+        .btn-location.clear {
+            background: #e2e8f0;
+            color: var(--text-main);
+        }
+        .btn-location.clear:hover {
+            background: #cbd5e1;
+        }
+        .flete-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 12px;
+            flex-wrap: wrap;
+        }
+        .flete-status .badge-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 10px;
+        }
+        .badge-status.auto {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .badge-status.manual {
+            background: #fef3c7;
+            color: #b45309;
+        }
+        .badge-status.edit {
+            background: #fae8ff;
+            color: #86198f;
+        }
+        /* ===== FIN ESTILOS LOCATION ===== */
+
         @media (max-width: 768px) {
             body { flex-direction: column; padding-bottom: 80px; }
             .sidebar {
@@ -164,6 +298,9 @@
             .top-header h1 { font-size: 16px; }
             .top-header p { font-size: 11px; }
             .action-btns { flex-direction: column; }
+            .location-selector { flex-direction: column; }
+            .location-selector select { min-width: unset; width: 100%; }
+            .location-selector .btn-location { width: 100%; text-align: center; }
         }
     </style>
 </head>
@@ -215,19 +352,22 @@
                 <div class="form-grid">
                     <div class="form-group full">
                         <label>Vehículo / Modelo</label>
-                        <input type="text" id="vehiculo" value="2021 MITSUBISHI MIRAGE ES BLUE" oninput="calcular()">
+                        <input type="text" id="vehiculo" value="2023 MITSUBISHI MIRAGE ES BLANCO" oninput="calcular()">
                     </div>
                     <div class="form-group">
                         <label>VIN (Chasis)</label>
-                        <input type="text" id="vin" placeholder="ML32AUHJ0MH013612" value="ML32AUHJ0MH013612" oninput="calcular()">
+                        <input type="text" id="vin" placeholder="ML32AUHJ9PH004752" value="ML32AUHJ9PH004752" oninput="calcular()">
                     </div>
                     <div class="form-group">
                         <label>N° de Lote</label>
-                        <input type="text" id="lote" placeholder="77384874" value="77384874" oninput="calcular()">
+                        <input type="text" id="lote" placeholder="55506236" value="55506236" oninput="calcular()">
                     </div>
                     <div class="form-group">
-                        <label>Precio Subasta ($)</label>
-                        <input type="number" id="precio" value="2250" oninput="calcular()">
+                        <label>💰 Precio Subasta</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="precio" value="6750" oninput="calcular()" step="0.01">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Título</label>
@@ -249,21 +389,56 @@
                             <option value="0.05,0.01">8. Pick-up (DAI 5%, APM 1%)</option>
                         </select>
                     </div>
+                    
+                    <!-- ===== SELECTOR DE UBICACIÓN MEJORADO ===== -->
+                    <div class="form-group full location-section">
+                        <div class="section-label">
+                            📍 UBICACIÓN DE SUBASTA
+                            <span>NUEVO</span>
+                        </div>
+                        <div class="location-selector">
+                            <select id="ubicacion">
+                                <option value="">-- Seleccionar Estado y Ciudad --</option>
+                            </select>
+                            <button class="btn-location apply" onclick="aplicarFlete()">📌 Aplicar Flete</button>
+                            <button class="btn-location clear" onclick="limpiarUbicacion()">✖️ Limpiar</button>
+                        </div>
+                        <div class="flete-status">
+                            <span style="font-weight:600;">Flete actual:</span>
+                            <span id="flete-valor-display">$1,340.00</span>
+                            <span class="badge-status manual" id="flete-status-badge">⚙️ Manual</span>
+                            <span id="flete-origen-display" style="color: var(--text-muted); font-size:11px; margin-left:4px;"></span>
+                        </div>
+                    </div>
+
+                    <!-- ===== AQUÍ ESTÁN LOS CAMBIOS: "FLETE" y "SEGURO" sin "DUCA" ===== -->
                     <div class="form-group">
-                        <label>Flete DUCA ($)</label>
-                        <input type="number" id="flete" value="1340" oninput="calcular()">
+                        <label>🚢 FLETE</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="flete" value="1340" oninput="onFleteManual()" step="0.01">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Seguro DUCA ($)</label>
-                        <input type="number" id="seguro" value="73.05" step="0.01" oninput="calcular()">
+                        <label>🛡️ SEGURO</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="seguro" value="73.05" step="0.01" oninput="calcular()">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Storage ($)</label>
-                        <input type="number" id="storage" value="20" oninput="calcular()">
+                        <label>📦 STORAGE</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="storage" value="0" oninput="calcular()" step="0.01">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label>Est. Taller ($)</label>
-                        <input type="number" id="reparacion" value="0" oninput="calcular()">
+                        <label>🔧 EST. TALLER</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="reparacion" value="0" oninput="calcular()" step="0.01">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -384,6 +559,64 @@
 </div>
 
 <script>
+    // ============================================================
+    // 1. DATOS DE FLETES (integrados desde el archivo .txt)
+    // ============================================================
+    const FLETES_DATA = [
+        { estado: "AZ", region: "Arizona", ciudad: "Phoenix", subasta: "Copart / IAAI", flete: 1390 },
+        { estado: "AZ", region: "Arizona", ciudad: "Phoenix North", subasta: "Copart", flete: 1440 },
+        { estado: "AZ", region: "Arizona", ciudad: "Tucson", subasta: "Copart / IAAI", flete: 1515 },
+        { estado: "CA", region: "California", ciudad: "Los Angeles", subasta: "Copart / IAAI", flete: 1265 },
+        { estado: "CA", region: "California", ciudad: "Sun Valley", subasta: "Copart", flete: 1315 },
+        { estado: "CA", region: "California", ciudad: "Van Nuys", subasta: "Copart", flete: 1290 },
+        { estado: "CA", region: "California", ciudad: "San Diego", subasta: "Copart / IAAI", flete: 1370 },
+        { estado: "CA", region: "California", ciudad: "So Sacramento", subasta: "", flete: 1440 },
+        { estado: "CO", region: "Colorado", ciudad: "Denver Central", subasta: "", flete: 1810 },
+        { estado: "CT", region: "Connecticut", ciudad: "Hartford", subasta: "", flete: 1520 },
+        { estado: "DE", region: "Delaware", ciudad: "New Castle", subasta: "", flete: 1370 },
+        { estado: "FL", region: "Florida", ciudad: "Miami Central", subasta: "Copart", flete: 955 },
+        { estado: "FL", region: "Florida", ciudad: "Punta Gorda South", subasta: "", flete: 1080 },
+        { estado: "FL", region: "Florida", ciudad: "Jacksonville North", subasta: "", flete: 1105 },
+        { estado: "GA", region: "Georgia", ciudad: "Savannah / Atlanta", subasta: "CrashedToys", flete: 1200 },
+        { estado: "IA", region: "Iowa", ciudad: "Davenport", subasta: "Copart / IAAI", flete: 2154 },
+        { estado: "IL", region: "Illinois", ciudad: "Wheeling", subasta: "Copart", flete: 1530 },
+        { estado: "IN", region: "Indiana", ciudad: "Indianapolis", subasta: "Copart / IAAI", flete: 1525 },
+        { estado: "KS", region: "Kansas", ciudad: "Kansas City", subasta: "Copart / IAAI", flete: 1530 },
+        { estado: "MD", region: "Maryland", ciudad: "Baltimore", subasta: "Copart / IAAI", flete: 1435 },
+        { estado: "MO", region: "Missouri", ciudad: "Columbia", subasta: "Copart, St. Louis", flete: 1605 },
+        { estado: "MS", region: "Mississippi", ciudad: "Grenada", subasta: "IAAI, Jackson (Copart / IAAI)", flete: 1330 },
+        { estado: "MT", region: "Montana", ciudad: "Billings", subasta: "Copart / IAAI", flete: 2414 },
+        { estado: "NC", region: "North Carolina", ciudad: "China Grove", subasta: "Copart, Lumberton (Copart)", flete: 1255 },
+        { estado: "NC", region: "North Carolina", ciudad: "Gastonia", subasta: "Copart", flete: 1280 },
+        { estado: "NE", region: "Nebraska", ciudad: "Lincoln, Omaha", subasta: "", flete: 2020 },
+        { estado: "NH", region: "New Hampshire", ciudad: "Webster", subasta: "", flete: 1600 },
+        { estado: "NJ", region: "New Jersey", ciudad: "Glassboro", subasta: "", flete: 1310 },
+        { estado: "NJ", region: "New Jersey", ciudad: "Northern NJ", subasta: "", flete: 1340 },
+        { estado: "NJ", region: "New Jersey", ciudad: "Trenton NJ", subasta: "", flete: 1360 },
+        { estado: "NM", region: "New Mexico", ciudad: "Albuquerque", subasta: "", flete: 1910 },
+        { estado: "NV", region: "Nevada", ciudad: "Las Vegas", subasta: "Copart / IAAI", flete: 1440 },
+        { estado: "NV", region: "Nevada", ciudad: "Reno", subasta: "Copart / IAAI", flete: 1740 },
+        { estado: "NY", region: "New York", ciudad: "Albany", subasta: "", flete: 1545 },
+        { estado: "NY", region: "New York", ciudad: "Buffalo", subasta: "", flete: 1820 },
+        { estado: "OK", region: "Oklahoma", ciudad: "Tulsa", subasta: "Copart / IAAI", flete: 2154 },
+        { estado: "OR", region: "Oregon", ciudad: "Portland North", subasta: "Copart", flete: 1710 },
+        { estado: "PA", region: "Pensilvania", ciudad: "Hazleton, Philadelphia", subasta: "", flete: 1380 },
+        { estado: "PA", region: "Pensilvania", ciudad: "Pittsburgh", subasta: "", flete: 1595 },
+        { estado: "SC", region: "South Carolina", ciudad: "Greenville", subasta: "IAAI", flete: 1205 },
+        { estado: "SC", region: "South Carolina", ciudad: "Spartanburg", subasta: "Copart", flete: 1215 },
+        { estado: "TN", region: "Tennessee", ciudad: "Nashville, Memphis, Knoxville", subasta: "Copart / IAAI", flete: 1335 },
+        { estado: "TN", region: "Tennessee", ciudad: "Chattanooga", subasta: "IAAI", flete: 1405 },
+        { estado: "TX", region: "Texas", ciudad: "Austin, Dallas, Houston, San Antonio", subasta: "", flete: 1355 },
+        { estado: "TX", region: "Texas", ciudad: "Fort Worth North", subasta: "IAAI", flete: 1455 },
+        { estado: "UT", region: "Utah", ciudad: "Salt Lake City, Provo, Ogden", subasta: "", flete: 1565 },
+        { estado: "WA", region: "Washington", ciudad: "Graham", subasta: "Copart", flete: 1810 },
+        { estado: "WA", region: "Washington", ciudad: "North Seattle", subasta: "Copart", flete: 1865 },
+        { estado: "WV", region: "West Virginia", ciudad: "Charleston", subasta: "Copart", flete: 2154 }
+    ];
+
+    // ============================================================
+    // 2. CONFIGURACIÓN DE FIREBASE
+    // ============================================================
     const firebaseConfig = {
         apiKey: "AIzaSyDJnpVBknIaxZpnA7Mp_drKtU_K5beCeKw",
         authDomain: "imporsalv-935e2.firebaseapp.com",
@@ -396,10 +629,15 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    // ============================================================
+    // 3. VARIABLES GLOBALES
+    // ============================================================
     let chart;
     let datosUltimoCalculo = {};
     let historialData = [];
     let inventarioData = [];
+    let fleteAutomatico = false;
+    let ubicacionSeleccionada = null;
 
     const TABLA_BUYER_FEES = [
         {min: 0, max: 49.99, cleanFee: 25, salvageFee: 25},
@@ -434,18 +672,113 @@
         {min: 5000, max: 999999, cleanFee: 850, salvageFee: 1000}
     ];
 
-    db.collection('historial').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        historialData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        cargarHistorial();
-        cargarReportes();
-    });
+    // ============================================================
+    // 4. FUNCIONES DE INICIALIZACIÓN
+    // ============================================================
+    function cargarSelectoresUbicacion() {
+        const select = document.getElementById('ubicacion');
+        const grupos = {};
+        FLETES_DATA.forEach(item => {
+            const key = item.estado;
+            if (!grupos[key]) grupos[key] = [];
+            grupos[key].push(item);
+        });
 
-    db.collection('inventario').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        inventarioData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        cargarInventario();
-        cargarReportes();
-    });
+        const sortedEstados = Object.keys(grupos).sort();
+        sortedEstados.forEach(estado => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = `${estado} - ${grupos[estado][0].region}`;
+            
+            grupos[estado].sort((a, b) => a.ciudad.localeCompare(b.ciudad));
+            grupos[estado].forEach(item => {
+                const option = document.createElement('option');
+                option.value = `${item.estado}|${item.ciudad}`;
+                let label = `${item.ciudad}`;
+                if (item.subasta) label += ` (${item.subasta})`;
+                label += ` - $${item.flete}`;
+                option.textContent = label;
+                option.dataset.flete = item.flete;
+                option.dataset.estado = item.estado;
+                option.dataset.ciudad = item.ciudad;
+                optgroup.appendChild(option);
+            });
+            select.appendChild(optgroup);
+        });
+    }
 
+    // ============================================================
+    // 5. FUNCIONES DE FLETE
+    // ============================================================
+    function aplicarFlete() {
+        const select = document.getElementById('ubicacion');
+        const selectedOption = select.options[select.selectedIndex];
+        
+        if (!selectedOption || !selectedOption.value) {
+            alert('Por favor selecciona una ubicación de la lista.');
+            return;
+        }
+
+        const fleteValor = parseFloat(selectedOption.dataset.flete);
+        const estado = selectedOption.dataset.estado;
+        const ciudad = selectedOption.dataset.ciudad;
+
+        if (isNaN(fleteValor) || fleteValor <= 0) {
+            alert('El flete para esta ubicación no es válido.');
+            return;
+        }
+
+        document.getElementById('flete').value = fleteValor;
+        fleteAutomatico = true;
+        ubicacionSeleccionada = { estado, ciudad, flete: fleteValor };
+        
+        // Actualizar UI
+        document.getElementById('flete-valor-display').textContent = fmt(fleteValor);
+        document.getElementById('flete-status-badge').className = 'badge-status auto';
+        document.getElementById('flete-status-badge').textContent = '✅ Automático';
+        document.getElementById('flete-origen-display').textContent = `📍 ${estado} - ${ciudad}`;
+        
+        calcular();
+    }
+
+    function limpiarUbicacion() {
+        document.getElementById('ubicacion').selectedIndex = 0;
+        fleteAutomatico = false;
+        ubicacionSeleccionada = null;
+        document.getElementById('flete-status-badge').className = 'badge-status manual';
+        document.getElementById('flete-status-badge').textContent = '⚙️ Manual';
+        document.getElementById('flete-origen-display').textContent = '';
+        actualizarStatusFlete();
+        calcular();
+    }
+
+    function onFleteManual() {
+        if (fleteAutomatico) {
+            fleteAutomatico = false;
+            ubicacionSeleccionada = null;
+            document.getElementById('ubicacion').selectedIndex = 0;
+        }
+        actualizarStatusFlete();
+        calcular();
+    }
+
+    function actualizarStatusFlete() {
+        const fleteValor = parseFloat(document.getElementById('flete').value) || 0;
+        document.getElementById('flete-valor-display').textContent = fmt(fleteValor);
+        
+        if (fleteAutomatico && ubicacionSeleccionada) {
+            document.getElementById('flete-status-badge').className = 'badge-status auto';
+            document.getElementById('flete-status-badge').textContent = '✅ Automático';
+            document.getElementById('flete-origen-display').textContent = `📍 ${ubicacionSeleccionada.estado} - ${ubicacionSeleccionada.ciudad}`;
+        } else {
+            document.getElementById('flete-status-badge').className = 'badge-status manual';
+            document.getElementById('flete-status-badge').textContent = '⚙️ Manual';
+            document.getElementById('flete-origen-display').textContent = '';
+        }
+    }
+
+    // ============================================================
+    // 6. FUNCIONES PRINCIPALES
+    // ============================================================
     function switchTab(tabId, element) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -500,7 +833,8 @@
             dai, apm, iva, aiv, tramiteAduanal, storage, comisionFondos, agenciaAduanal,
             tributosAduana, totalOtrosGastos, totalFinal, reparacion,
             flete, seguro, titulo: document.getElementById('titulo').value,
-            categoria: document.getElementById('categoria').value
+            categoria: document.getElementById('categoria').value,
+            ubicacion: ubicacionSeleccionada
         };
 
         document.getElementById('kpi-total').innerText = fmt(totalFinal);
@@ -529,6 +863,7 @@
         document.getElementById('row-agencia').innerText = fmt(agenciaAduanal);
         document.getElementById('row-reparacion').innerText = fmt(reparacion);
 
+        actualizarStatusFlete();
         actualizarGrafico(fob, flete + seguro, tributosAduana + totalOtrosGastos);
     }
 
@@ -585,6 +920,11 @@
         document.getElementById('seguro').value = item.seguro || 0;
         document.getElementById('storage').value = item.storage || 0;
         document.getElementById('reparacion').value = item.reparacion || 0;
+        
+        fleteAutomatico = false;
+        ubicacionSeleccionada = null;
+        document.getElementById('ubicacion').selectedIndex = 0;
+        actualizarStatusFlete();
 
         switchTab('calculadora', document.querySelectorAll('.nav-item')[0]);
         calcular();
@@ -649,7 +989,8 @@
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n📋 *Comisión:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
+        let ubicacionTexto = d.ubicacion ? `📍 ${d.ubicacion.estado} - ${d.ubicacion.ciudad}` : '📍 Flete manual';
+        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n${ubicacionTexto}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n📋 *Comisión:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
         navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
 
@@ -658,10 +999,32 @@
         document.getElementById('vin').value = '';
         document.getElementById('lote').value = '';
         document.getElementById('precio').value = '0';
+        limpiarUbicacion();
         calcular();
     }
 
-    calcular();
+    // ============================================================
+    // 7. LISTENERS DE FIREBASE
+    // ============================================================
+    db.collection('historial').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        historialData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        cargarHistorial();
+        cargarReportes();
+    });
+
+    db.collection('inventario').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        inventarioData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        cargarInventario();
+        cargarReportes();
+    });
+
+    // ============================================================
+    // 8. INICIALIZACIÓN
+    // ============================================================
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarSelectoresUbicacion();
+        calcular();
+    });
 </script>
 </body>
 </html>
