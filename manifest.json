@@ -1,17 +1,31 @@
 {
-  "name": "Imporsalv Calculator",
+  "name": "Calculadora Imporsalv SA de CV",
   "short_name": "Imporsalv",
-  "description": "Calculadora de importación de vehículos Imporsalv SA de CV",
+  "description": "Calculadora de importación de vehículos - Imporsalv SA de CV",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8fafc",
-  "theme_color": "#030712",
+  "background_color": "#030712",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "icono.png",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
     }
   ]
 }
