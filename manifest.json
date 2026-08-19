@@ -8,9 +8,9 @@
   "theme_color": "#030712",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%23030712'/%3E%3Cpath d='M120 340c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40zm280 0c-22.1 0-40 17.9-40 40s17.9 40 40 40 40-17.9 40-40-17.9-40-40-40z' fill='%2310b981'/%3E%3Cpath d='M392 320h-40l-36-48H156l-36 48H80c-8.8 0-16 7.2-16 16s7.2 16 16 16h36c8.8 0 16-7.2 16-16l20-32h160l20 32c0 8.8 7.2 16 16 16h40c8.8 0 16-7.2 16-16s-7.2-16-16-16z' fill='%2310b981'/%3E%3Cpath d='M136 240c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h240c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16H136z' fill='%2310b981'/%3E%3Ccircle cx='120' cy='380' r='20' fill='%23030712'/%3E%3Ccircle cx='400' cy='380' r='20' fill='%23030712'/%3E%3C/svg%3E",
+      "src": "icono.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
