@@ -4,20 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CALCULADORA IMPORSALV SA DE CV</title>
-    
-    <!-- ============================================================ -->
-    <!-- PASO 1: CONFIGURACIÓN PWA (PROGRESSIVE WEB APP)              -->
-    <!-- ============================================================ -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Imporsalv">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-    <meta name="theme-color" content="#030712">
-    <meta name="description" content="Calculadora de importación de vehículos - Imporsalv SA de CV">
-    <!-- ============================================================ -->
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -204,7 +190,6 @@
 
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
-        /* ===== ESTILOS MEJORADOS PARA EL SELECTOR DE UBICACIÓN ===== */
         .location-section {
             background: #f0f7ff;
             border: 2px solid var(--primary);
@@ -292,7 +277,6 @@
             background: #fae8ff;
             color: #86198f;
         }
-        /* ===== FIN ESTILOS LOCATION ===== */
 
         @media (max-width: 768px) {
             body { flex-direction: column; padding-bottom: 80px; }
@@ -404,7 +388,6 @@
                         </select>
                     </div>
                     
-                    <!-- ===== SELECTOR DE UBICACIÓN MEJORADO ===== -->
                     <div class="form-group full location-section">
                         <div class="section-label">
                             📍 UBICACIÓN DE SUBASTA
@@ -425,7 +408,6 @@
                         </div>
                     </div>
 
-                    <!-- ===== AQUÍ ESTÁN LOS CAMBIOS: "FLETE" y "SEGURO" sin "DUCA" ===== -->
                     <div class="form-group">
                         <label>🚢 FLETE</label>
                         <div class="input-wrapper">
@@ -574,7 +556,7 @@
 
 <script>
     // ============================================================
-    // 1. DATOS DE FLETES (integrados desde el archivo .txt)
+    // 1. DATOS DE FLETES
     // ============================================================
     const FLETES_DATA = [
         { estado: "AZ", region: "Arizona", ciudad: "Phoenix", subasta: "Copart / IAAI", flete: 1390 },
@@ -745,7 +727,6 @@
         fleteAutomatico = true;
         ubicacionSeleccionada = { estado, ciudad, flete: fleteValor };
         
-        // Actualizar UI
         document.getElementById('flete-valor-display').textContent = fmt(fleteValor);
         document.getElementById('flete-status-badge').className = 'badge-status auto';
         document.getElementById('flete-status-badge').textContent = '✅ Automático';
@@ -793,13 +774,6 @@
     // ============================================================
     // 6. FUNCIONES PRINCIPALES
     // ============================================================
-    function switchTab(tabId, element) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        element.classList.add('active');
-    }
-
     function fmt(val) {
         return '$' + (val || 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
@@ -840,15 +814,39 @@
         let totalOtrosGastos = storage + reparacion + comisionFondos + agenciaAduanal + tramiteAduanal;
         let totalFinal = fob + flete + seguro + tributosAduana + totalOtrosGastos;
 
+        let ubicacionTexto = 'Manual';
+        if (ubicacionSeleccionada) {
+            ubicacionTexto = `${ubicacionSeleccionada.estado} - ${ubicacionSeleccionada.ciudad}`;
+        }
+
         datosUltimoCalculo = {
-            fecha: new Date().toLocaleDateString(),
+            fecha: new Date().toLocaleDateString('es-ES'),
             timestamp: Date.now(),
-            vehiculo, vin, lote, precio, buyerFee, copartExtra, fob, cif,
-            dai, apm, iva, aiv, tramiteAduanal, storage, comisionFondos, agenciaAduanal,
-            tributosAduana, totalOtrosGastos, totalFinal, reparacion,
-            flete, seguro, titulo: document.getElementById('titulo').value,
-            categoria: document.getElementById('categoria').value,
-            ubicacion: ubicacionSeleccionada
+            vehiculo: vehiculo || 'Sin especificar',
+            vin: vin || 'N/A',
+            lote: lote || 'N/A',
+            precio: precio || 0,
+            buyerFee: buyerFee || 0,
+            copartExtra: copartExtra || 195,
+            fob: fob || 0,
+            cif: cif || 0,
+            flete: flete || 0,
+            seguro: seguro || 0,
+            storage: storage || 0,
+            reparacion: reparacion || 0,
+            dai: dai || 0,
+            apm: apm || 0,
+            iva: iva || 0,
+            aiv: aiv || 0,
+            tramiteAduanal: tramiteAduanal || 113,
+            comisionFondos: comisionFondos || 0,
+            agenciaAduanal: agenciaAduanal || 350,
+            tributosAduana: tributosAduana || 0,
+            totalOtrosGastos: totalOtrosGastos || 0,
+            totalFinal: totalFinal || 0,
+            titulo: document.getElementById('titulo').value || 'salvage',
+            categoria: document.getElementById('categoria').value || '0.20,0.04',
+            ubicacion: ubicacionTexto
         };
 
         document.getElementById('kpi-total').innerText = fmt(totalFinal);
@@ -894,42 +892,62 @@
         });
     }
 
+    // ============================================================
+    // 7. GUARDAR EN FIREBASE
+    // ============================================================
     function guardarEnHistorial() {
-        db.collection('historial').add(datosUltimoCalculo).then(() => alert('☁️ Cotización guardada en la nube'));
-    }
-
-    function cargarHistorial() {
-        let tbody = document.getElementById('tabla-historial');
-        if(historialData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No hay cotizaciones guardadas.</td></tr>`;
+        if (!datosUltimoCalculo || !datosUltimoCalculo.vehiculo) {
+            alert('⚠️ Primero debes calcular una cotización.');
             return;
         }
-        tbody.innerHTML = historialData.map((item) => `
-            <tr>
-                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">${item.fecha}</td>
-                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')"><strong>${item.vehiculo || 'Sin Nombre'}</strong></td>
-                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')"><strong>${fmt(item.totalFinal)}</strong></td>
-                <td>
-                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                        <button class="btn btn-primary btn-sm" onclick="abrirCotizacion('${item.id}')">📂 Abrir</button>
-                        <button class="btn btn-outline btn-sm" onclick="pasarAInventario('${item.id}')">➕ Stock</button>
-                        <button class="btn btn-danger btn-sm" onclick="borrarHistorial('${item.id}')">🗑️</button>
-                    </div>
-                </td>
-            </tr>
-        `).join('');
+
+        if (typeof db === 'undefined' || !db) {
+            alert('❌ Error: Firebase no está inicializado correctamente.');
+            console.error('Firebase no disponible');
+            return;
+        }
+
+        const btnGuardar = document.querySelector('.btn-primary');
+        const textoOriginal = btnGuardar.textContent;
+        btnGuardar.textContent = '⏳ Guardando...';
+        btnGuardar.disabled = true;
+
+        const datosParaGuardar = { ...datosUltimoCalculo };
+
+        db.collection('historial')
+            .add(datosParaGuardar)
+            .then((docRef) => {
+                console.log('✅ Cotización guardada con ID:', docRef.id);
+                alert('☁️ Cotización guardada exitosamente en la nube');
+                btnGuardar.textContent = textoOriginal;
+                btnGuardar.disabled = false;
+            })
+            .catch((error) => {
+                console.error('❌ Error al guardar en Firebase:', error);
+                alert('❌ Error al guardar: ' + error.message);
+                btnGuardar.textContent = textoOriginal;
+                btnGuardar.disabled = false;
+            });
     }
 
+    // ============================================================
+    // 8. FUNCIONES PARA ABRIR COTIZACIONES
+    // ============================================================
     function abrirCotizacion(docId) {
         let item = historialData.find(i => i.id === docId);
-        if(!item) return;
+        if (!item) {
+            alert('⚠️ No se encontró la cotización');
+            return;
+        }
 
         document.getElementById('vehiculo').value = item.vehiculo || '';
         document.getElementById('vin').value = item.vin || '';
         document.getElementById('lote').value = item.lote || '';
         document.getElementById('precio').value = item.precio || 0;
-        if(item.titulo) document.getElementById('titulo').value = item.titulo;
-        if(item.categoria) document.getElementById('categoria').value = item.categoria;
+        
+        if (item.titulo) document.getElementById('titulo').value = item.titulo;
+        if (item.categoria) document.getElementById('categoria').value = item.categoria;
+        
         document.getElementById('flete').value = item.flete || 0;
         document.getElementById('seguro').value = item.seguro || 0;
         document.getElementById('storage').value = item.storage || 0;
@@ -944,67 +962,202 @@
         calcular();
     }
 
+    // ============================================================
+    // 9. BORRAR DE FIREBASE
+    // ============================================================
     function borrarHistorial(docId) {
-        if(confirm('¿Estás seguro de eliminar esta cotización del historial?')) {
-            db.collection('historial').doc(docId).delete().catch(error => {
-                alert('Error al eliminar: ' + error.message);
-            });
-        }
-    }
-
-    function pasarAInventario(docId) {
-        let item = historialData.find(i => i.id === docId);
-        let precioVenta = prompt(`PRECIO DE VENTA ESPERADO ($):`, (item.totalFinal * 1.25).toFixed(2));
-        if(!precioVenta) return;
-
-        db.collection('inventario').add({
-            timestamp: Date.now(),
-            vehiculo: item.vehiculo,
-            vin: item.vin || 'N/A',
-            costoTotal: item.totalFinal,
-            precioVenta: parseFloat(precioVenta),
-            estado: 'Transito'
-        }).then(() => alert('🚘 Unidad agregada al Inventario'));
-    }
-
-    function cargarInventario() {
-        let tbody = document.getElementById('tabla-inventario');
-        if(inventarioData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">No hay vehículos en inventario.</td></tr>`;
+        if (!confirm('¿Estás seguro de eliminar esta cotización del historial?')) {
             return;
         }
+
+        db.collection('historial')
+            .doc(docId)
+            .delete()
+            .then(() => {
+                console.log('✅ Cotización eliminada');
+                alert('🗑️ Cotización eliminada correctamente');
+            })
+            .catch((error) => {
+                console.error('❌ Error al eliminar:', error);
+                alert('❌ Error al eliminar: ' + error.message);
+            });
+    }
+
+    // ============================================================
+    // 10. PASAR A INVENTARIO
+    // ============================================================
+    function pasarAInventario(docId) {
+        let item = historialData.find(i => i.id === docId);
+        if (!item) {
+            alert('⚠️ No se encontró la cotización');
+            return;
+        }
+
+        let precioVenta = prompt(
+            `PRECIO DE VENTA ESPERADO ($):\nCosto total: ${fmt(item.totalFinal)}`,
+            (item.totalFinal * 1.25).toFixed(2)
+        );
+        
+        if (!precioVenta) return;
+
+        const datosInventario = {
+            timestamp: Date.now(),
+            fecha: new Date().toLocaleDateString('es-ES'),
+            vehiculo: item.vehiculo || 'Sin especificar',
+            vin: item.vin || 'N/A',
+            lote: item.lote || 'N/A',
+            costoTotal: item.totalFinal || 0,
+            precioVenta: parseFloat(precioVenta) || 0,
+            estado: 'Transito',
+            fechaIngreso: new Date().toISOString()
+        };
+
+        db.collection('inventario')
+            .add(datosInventario)
+            .then(() => {
+                alert('🚘 Unidad agregada al Inventario exitosamente');
+            })
+            .catch((error) => {
+                console.error('❌ Error al agregar al inventario:', error);
+                alert('❌ Error al agregar: ' + error.message);
+            });
+    }
+
+    // ============================================================
+    // 11. LISTENERS DE FIREBASE
+    // ============================================================
+    db.collection('historial')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot((snapshot) => {
+            historialData = snapshot.docs.map(doc => ({ 
+                id: doc.id, 
+                ...doc.data() 
+            }));
+            cargarHistorial();
+            cargarReportes();
+        }, (error) => {
+            console.error('❌ Error en listener de historial:', error);
+            const tbody = document.getElementById('tabla-historial');
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">⚠️ Error al cargar datos: ${error.message}</td></tr>`;
+        });
+
+    db.collection('inventario')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot((snapshot) => {
+            inventarioData = snapshot.docs.map(doc => ({ 
+                id: doc.id, 
+                ...doc.data() 
+            }));
+            cargarInventario();
+            cargarReportes();
+        }, (error) => {
+            console.error('❌ Error en listener de inventario:', error);
+            const tbody = document.getElementById('tabla-inventario');
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">⚠️ Error al cargar datos: ${error.message}</td></tr>`;
+        });
+
+    // ============================================================
+    // 12. CARGA DE HISTORIAL
+    // ============================================================
+    function cargarHistorial() {
+        let tbody = document.getElementById('tabla-historial');
+        
+        if (!historialData || historialData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">📭 No hay cotizaciones guardadas.</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = historialData.map((item) => `
+            <tr>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">${item.fecha || 'Sin fecha'}</td>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">
+                    <strong>${item.vehiculo || 'Sin Nombre'}</strong>
+                    <br><span style="font-size:10px;color:var(--text-muted)">${item.vin || ''}</span>
+                </td>
+                <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">
+                    <strong>${fmt(item.totalFinal)}</strong>
+                </td>
+                <td>
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end;">
+                        <button class="btn btn-primary btn-sm" onclick="abrirCotizacion('${item.id}')">📂</button>
+                        <button class="btn btn-success btn-sm" onclick="pasarAInventario('${item.id}')">📦</button>
+                        <button class="btn btn-danger btn-sm" onclick="borrarHistorial('${item.id}')">🗑️</button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // ============================================================
+    // 13. CARGA DE INVENTARIO
+    // ============================================================
+    function cargarInventario() {
+        let tbody = document.getElementById('tabla-inventario');
+        
+        if (!inventarioData || inventarioData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="empty-state">📭 No hay vehículos en inventario.</td></tr>`;
+            return;
+        }
+
         tbody.innerHTML = inventarioData.map((item) => {
             let badgeClass = 'badge-transito';
-            if(item.estado === 'Taller') badgeClass = 'badge-taller';
-            if(item.estado === 'Disponible') badgeClass = 'badge-disponible';
-            if(item.estado === 'Vendido') badgeClass = 'badge-vendido';
+            let estado = item.estado || 'Transito';
+            
+            if (estado === 'Taller') badgeClass = 'badge-taller';
+            if (estado === 'Disponible') badgeClass = 'badge-disponible';
+            if (estado === 'Vendido') badgeClass = 'badge-vendido';
+
+            const ganancia = (item.precioVenta || 0) - (item.costoTotal || 0);
+            const gananciaColor = ganancia >= 0 ? 'green' : 'red';
 
             return `
                 <tr>
-                    <td><strong>${item.vehiculo}</strong></td>
+                    <td>
+                        <strong>${item.vehiculo || 'Sin especificar'}</strong>
+                        <br><span style="font-size:10px;color:var(--text-muted)">${item.vin || 'N/A'}</span>
+                    </td>
                     <td>${fmt(item.costoTotal)}</td>
-                    <td>${fmt(item.precioVenta)}</td>
-                    <td><span class="badge ${badgeClass}">${item.estado}</span></td>
+                    <td>
+                        ${fmt(item.precioVenta)}
+                        ${item.precioVenta ? `<br><span style="font-size:10px;color:${gananciaColor};font-weight:700;">${fmt(ganancia)}</span>` : ''}
+                    </td>
+                    <td><span class="badge ${badgeClass}">${estado}</span></td>
                 </tr>
             `;
         }).join('');
     }
 
+    // ============================================================
+    // 14. REPORTES
+    // ============================================================
     function cargarReportes() {
-        document.getElementById('rep-tot-cot').innerText = historialData.length;
-        document.getElementById('rep-tot-inv').innerText = inventarioData.length;
+        document.getElementById('rep-tot-cot').innerText = historialData.length || 0;
+        document.getElementById('rep-tot-inv').innerText = inventarioData.length || 0;
 
         let totalInversion = inventarioData.reduce((acc, curr) => acc + (curr.costoTotal || 0), 0);
-        let totalGanancia = inventarioData.reduce((acc, curr) => acc + ((curr.precioVenta || 0) - (curr.costoTotal || 0)), 0);
-
         document.getElementById('rep-tot-inv-val').innerText = fmt(totalInversion);
+
+        let totalGanancia = inventarioData.reduce((acc, curr) => {
+            const ganancia = (curr.precioVenta || 0) - (curr.costoTotal || 0);
+            return acc + ganancia;
+        }, 0);
         document.getElementById('rep-tot-gan').innerText = fmt(totalGanancia);
+    }
+
+    // ============================================================
+    // 15. OTRAS FUNCIONES
+    // ============================================================
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        element.classList.add('active');
     }
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let ubicacionTexto = d.ubicacion ? `📍 ${d.ubicacion.estado} - ${d.ubicacion.ciudad}` : '📍 Flete manual';
-        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n${ubicacionTexto}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n📋 *Comisión:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
+        let ubicacionTexto = d.ubicacion || 'Manual';
+        let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n📍 *Ubicación:* ${ubicacionTexto}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n📋 *Comisión:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
         navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
 
@@ -1018,37 +1171,7 @@
     }
 
     // ============================================================
-    // 7. LISTENERS DE FIREBASE
-    // ============================================================
-    db.collection('historial').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        historialData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        cargarHistorial();
-        cargarReportes();
-    });
-
-    db.collection('inventario').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-        inventarioData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        cargarInventario();
-        cargarReportes();
-    });
-
-    // ============================================================
-    // 8. SERVICE WORKER - REGISTRO PARA PWA
-    // ============================================================
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(registration) {
-                    console.log('✅ Service Worker registrado con éxito:', registration.scope);
-                })
-                .catch(function(error) {
-                    console.log('❌ Error al registrar Service Worker:', error);
-                });
-        });
-    }
-
-    // ============================================================
-    // 9. INICIALIZACIÓN
+    // 16. INICIALIZACIÓN
     // ============================================================
     document.addEventListener('DOMContentLoaded', function() {
         cargarSelectoresUbicacion();
