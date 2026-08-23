@@ -350,21 +350,21 @@
                 <div class="form-grid">
                     <div class="form-group full">
                         <label>Vehículo / Modelo</label>
-                        <input type="text" id="vehiculo" value="2023 MITSUBISHI MIRAGE ES BLANCO" oninput="calcular()">
+                        <input type="text" id="vehiculo" placeholder="Ej: 2023 TOYOTA COROLLA" oninput="calcular()">
                     </div>
                     <div class="form-group">
                         <label>VIN (Chasis)</label>
-                        <input type="text" id="vin" placeholder="ML32AUHJ9PH004752" value="ML32AUHJ9PH004752" oninput="calcular()">
+                        <input type="text" id="vin" placeholder="Ingresa el VIN" oninput="calcular()">
                     </div>
                     <div class="form-group">
                         <label>N° de Lote</label>
-                        <input type="text" id="lote" placeholder="55506236" value="55506236" oninput="calcular()">
+                        <input type="text" id="lote" placeholder="Número de lote" oninput="calcular()">
                     </div>
                     <div class="form-group">
                         <label>💰 Precio Subasta</label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">$</span>
-                            <input type="number" id="precio" value="6750" oninput="calcular()" step="0.01">
+                            <input type="number" id="precio" value="0" oninput="calcular()" step="0.01">
                         </div>
                     </div>
                     <div class="form-group">
@@ -402,7 +402,7 @@
                         </div>
                         <div class="flete-status">
                             <span style="font-weight:600;">Flete actual:</span>
-                            <span id="flete-valor-display">$1,340.00</span>
+                            <span id="flete-valor-display">$0.00</span>
                             <span class="badge-status manual" id="flete-status-badge">⚙️ Manual</span>
                             <span id="flete-origen-display" style="color: var(--text-muted); font-size:11px; margin-left:4px;"></span>
                         </div>
@@ -412,14 +412,14 @@
                         <label>🚢 FLETE</label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">$</span>
-                            <input type="number" id="flete" value="1340" oninput="onFleteManual()" step="0.01">
+                            <input type="number" id="flete" value="0" oninput="onFleteManual()" step="0.01">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>🛡️ SEGURO</label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">$</span>
-                            <input type="number" id="seguro" value="73.05" step="0.01" oninput="calcular()">
+                            <input type="number" id="seguro" value="0" step="0.01" oninput="calcular()">
                         </div>
                     </div>
                     <div class="form-group">
@@ -742,6 +742,8 @@
         document.getElementById('flete-status-badge').className = 'badge-status manual';
         document.getElementById('flete-status-badge').textContent = '⚙️ Manual';
         document.getElementById('flete-origen-display').textContent = '';
+        document.getElementById('flete-valor-display').textContent = '$0.00';
+        document.getElementById('flete').value = '0';
         actualizarStatusFlete();
         calcular();
     }
@@ -1166,6 +1168,10 @@
         document.getElementById('vin').value = '';
         document.getElementById('lote').value = '';
         document.getElementById('precio').value = '0';
+        document.getElementById('flete').value = '0';
+        document.getElementById('seguro').value = '0';
+        document.getElementById('storage').value = '0';
+        document.getElementById('reparacion').value = '0';
         limpiarUbicacion();
         calcular();
     }
