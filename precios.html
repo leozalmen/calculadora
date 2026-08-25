@@ -35,32 +35,6 @@
             padding-bottom: 90px;
         }
 
-        /* Notificación flotante de guardado */
-        #toast-guardado {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #10b981;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 9999;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
-            pointer-events: none;
-        }
-        #toast-guardado.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
         .sidebar {
             width: 280px;
             background: var(--sidebar-bg);
@@ -202,13 +176,12 @@
         .btn-warning:hover { background: #d97706; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #dc2626; }
-        .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 6px; }
+        .btn-sm { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
 
-        .search-container { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
-        .search-box { flex: 1; min-width: 200px; }
-        
+        .search-box { margin-bottom: 14px; display: flex; gap: 8px; }
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
 
+        .badge-price { font-weight: 700; color: #047857; background: #ecfdf5; padding: 3px 6px; border-radius: 6px; display: inline-block; }
         .badge-limit { font-weight: 700; color: #b45309; background: #fffbeb; padding: 3px 6px; border-radius: 6px; display: inline-block; }
 
         .bidcars-banner {
@@ -236,9 +209,6 @@
     </style>
 </head>
 <body>
-
-<!-- Ventana flotante de aviso -->
-<div id="toast-guardado">Guardado ✅</div>
 
 <div class="sidebar">
     <div class="logo-container">Historial de precios</div>
@@ -279,8 +249,11 @@
                 <label>Pega aquí varios números de lote (separados por espacio, comas o saltos de línea)</label>
                 <textarea id="lista-lotes-pegados" rows="3" placeholder="Ej. 55042316, 58492011" oninput="procesarLotesPegados()"></textarea>
             </div>
-            <div id="contenedor-botones-masivos" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; max-height: 220px; overflow-y: auto;"></div>
-            <button class="btn btn-success btn-sm" style="width: 100%; font-weight: 700;" onclick="guardarLotesMasivos()">📥 Guardar Lotes</button>
+            
+            <!-- Botón de Guardar Lotes colocado arriba de los badges para visibilidad inmediata en móvil -->
+            <button class="btn btn-success btn-sm" style="width: 100%; font-weight: 700; margin-bottom: 12px;" onclick="guardarLotesMasivos()">📥 Guardar Lotes</button>
+
+            <div id="contenedor-botones-masivos" style="display: flex; gap: 6px; flex-wrap: wrap; max-height: 180px; overflow-y: auto;"></div>
         </div>
 
         <div class="card" style="max-width: 700px; margin: 0 auto;">
@@ -303,14 +276,14 @@
                     <label>Precio Final Subastado ($ USD)</label>
                     <div class="input-with-symbol">
                         <span>$</span>
-                        <input type="text" id="veh-precio" placeholder="0" oninput="formatearInputMiles(this)">
+                        <input type="number" step="any" id="veh-precio" placeholder="0.00">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Tu Tope / Puja Máxima Ideal ($ USD)</label>
                     <div class="input-with-symbol">
                         <span>$</span>
-                        <input type="text" id="veh-tope" placeholder="0" oninput="formatearInputMiles(this)">
+                        <input type="number" step="any" id="veh-tope" placeholder="0.00">
                     </div>
                 </div>
             </div>
@@ -336,16 +309,8 @@
         </div>
 
         <div class="card">
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="input-busqueda" placeholder="🔍 Escribe para buscar por modelo, año, lote..." oninput="filtrarLotes()">
-                </div>
-                <button type="button" class="btn btn-warning btn-sm" id="btn-filtro-repetidos" onclick="toggleFiltroRepetidos()" style="font-weight: 700; white-space: nowrap;">
-                    🧹 Ocultar repetidos (mantener uno)
-                </button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="eliminarTodosLosDuplicadosBaseDatos()" style="font-weight: 700; white-space: nowrap;" title="Borra permanentemente todas las copias duplicadas de la BD">
-                    🗑️ Borrar duplicados de BD
-                </button>
+            <div class="search-box">
+                <input type="text" id="input-busqueda" placeholder="🔍 Escribe para buscar por modelo, año, lote..." oninput="filtrarLotes()">
             </div>
 
             <div class="table-responsive">
@@ -382,11 +347,10 @@
 
     let listaLotes = [];
     let lotesPegadosGlobal = [];
-    let soloUnicosActivo = false;
 
     db.collection('historial_subastas').orderBy('anio', 'desc').onSnapshot(snapshot => {
         listaLotes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        filtrarLotes();
+        renderizarTabla(listaLotes);
     });
 
     function switchTab(tabId, element) {
@@ -394,28 +358,6 @@
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         if(element) element.classList.add('active');
-    }
-
-    function formatearInputMiles(input) {
-        let valorLimpio = input.value.replace(/\D/g, '');
-        if (valorLimpio === '') {
-            input.value = '';
-            return;
-        }
-        input.value = Number(valorLimpio).toLocaleString('en-US');
-    }
-
-    function obtenerValorLimpio(id) {
-        let val = document.getElementById(id).value;
-        return Number(val.replace(/,/g, '')) || 0;
-    }
-
-    function mostrarToast() {
-        let toast = document.getElementById('toast-guardado');
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 1500);
     }
 
     function procesarLotesPegados() {
@@ -501,7 +443,7 @@
         });
 
         batch.commit().then(() => {
-            mostrarToast();
+            alert(`✅ Se han guardado ${lotesPegadosGlobal.length} lotes correctamente en el historial.`);
             limpiarListaPegada();
             switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
         }).catch(err => {
@@ -514,10 +456,10 @@
         let anio = document.getElementById('veh-anio').value.trim();
         let lote = document.getElementById('veh-lote').value.trim();
         let modelo = document.getElementById('veh-modelo').value.trim();
-        let precio = obtenerValorLimpio('veh-precio');
-        let tope = obtenerValorLimpio('veh-tope');
+        let precio = document.getElementById('veh-precio').value.trim();
+        let tope = document.getElementById('veh-tope').value.trim();
 
-        if(!anio || !modelo || !lote) {
+        if(!anio || !modelo || !lote || !precio) {
             alert('Por favor complete los campos obligatorios.');
             return;
         }
@@ -526,67 +468,24 @@
             anio: Number(anio),
             lote,
             modelo: modelo.toUpperCase(),
-            precio: precio,
-            tope: tope,
+            precio: Number(precio),
+            tope: tope ? Number(tope) : 0,
             timestamp: Date.now()
         };
 
         if(editId) {
             db.collection('historial_subastas').doc(editId).update(data).then(() => {
-                mostrarToast();
+                alert('✅ Referencia actualizada correctamente');
                 limpiarFormulario();
                 switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
             });
         } else {
             db.collection('historial_subastas').add(data).then(() => {
-                mostrarToast();
+                alert('✅ Referencia guardada correctamente');
                 limpiarFormulario();
                 switchTab('historial-general', document.querySelectorAll('.nav-item')[1]);
             });
         }
-    }
-
-    function toggleFiltroRepetidos() {
-        soloUnicosActivo = !soloUnicosActivo;
-        let btn = document.getElementById('btn-filtro-repetidos');
-        if (soloUnicosActivo) {
-            btn.style.background = '#0284c7';
-            btn.style.color = '#fff';
-            btn.innerText = '✅ Mostrando único por lote';
-        } else {
-            btn.style.background = '';
-            btn.style.color = '';
-            btn.innerText = '🧹 Ocultar repetidos (mantener uno)';
-        }
-        filtrarLotes();
-    }
-
-    function filtrarLotes() {
-        let inputBusqueda = document.getElementById('input-busqueda');
-        if(!inputBusqueda) return;
-        let texto = inputBusqueda.value.toLowerCase();
-
-        let filtradas = listaLotes.filter(item => {
-            return (item.modelo && item.modelo.toLowerCase().includes(texto)) ||
-                   (item.lote && item.lote.toLowerCase().includes(texto)) ||
-                   (item.anio && item.anio.toString().includes(texto));
-        });
-
-        if (soloUnicosActivo) {
-            let vistos = new Set();
-            filtradas = filtradas.filter(item => {
-                let numeroLote = item.lote ? item.lote.trim() : '';
-                if (!numeroLote) return true;
-                if (vistos.has(numeroLote)) {
-                    return false;
-                } else {
-                    vistos.add(numeroLote);
-                    return true;
-                }
-            });
-        }
-
-        renderizarTabla(filtradas);
     }
 
     function renderizarTabla(lotes) {
@@ -606,16 +505,8 @@
                         🌐 ${item.lote} ↗
                     </a>
                 </td>
-                <td>
-                    <div style="display: flex; gap: 4px; align-items: center;">
-                        <div class="input-with-symbol" style="width: 100px;">
-                            <span>$</span>
-                            <input type="text" id="quick-price-${item.id}" value="${item.precio ? Number(item.precio).toLocaleString('en-US') : 0}" style="padding: 4px 6px 4px 20px; font-size: 11px;" oninput="formatearInputMiles(this)">
-                        </div>
-                        <button class="btn btn-success btn-sm" onclick="actualizarPrecioRapido('${item.id}', event)" type="button">OK</button>
-                    </div>
-                </td>
-                <td><span class="badge-limit">${item.tope ? '$' + Number(item.tope).toLocaleString('en-US') + ' USD' : 'N/D'}</span></td>
+                <td><span class="badge-price">$${item.precio.toLocaleString()} USD</span></td>
+                <td><span class="badge-limit">${item.tope ? '$' + item.tope.toLocaleString() + ' USD' : 'N/D'}</span></td>
                 <td>
                     <div style="display: flex; gap: 4px; flex-wrap: wrap;">
                         <button class="btn btn-warning btn-sm" onclick="cargarEdicion('${item.id}')" type="button">✏️ Editar</button>
@@ -626,63 +517,16 @@
         `).join('');
     }
 
-    function actualizarPrecioRapido(id, event) {
-        let inputVal = document.getElementById(`quick-price-${id}`).value;
-        let nuevoPrecio = Number(inputVal.replace(/,/g, '')) || 0;
-
-        db.collection('historial_subastas').doc(id).update({
-            precio: nuevoPrecio
-        }).then(() => {
-            mostrarToast();
-            let btn = event.target;
-            let originalText = btn.innerText;
-            btn.innerText = '✔️';
-            setTimeout(() => btn.innerText = originalText, 1000);
-        }).catch(err => {
-            alert('Error al actualizar precio: ' + err.message);
+    function filtrarLotes() {
+        let inputBusqueda = document.getElementById('input-busqueda');
+        if(!inputBusqueda) return;
+        let texto = inputBusqueda.value.toLowerCase();
+        let filtradas = listaLotes.filter(item => {
+            return (item.modelo && item.modelo.toLowerCase().includes(texto)) ||
+                   (item.lote && item.lote.toLowerCase().includes(texto)) ||
+                   (item.anio && item.anio.toString().includes(texto));
         });
-    }
-
-    function eliminarTodosLosDuplicadosBaseDatos() {
-        if (!confirm('¿Estás seguro de eliminar permanentemente todas las copias repetidas de los lotes en la base de datos, conservando únicamente un registro por número de lote?')) {
-            return;
-        }
-
-        let vistos = new Set();
-        let idsAEliminar = [];
-
-        // Ordenamos para mantener de preferencia el que tenga precio mayor o el más reciente
-        let copiaLista = [...listaLotes].sort((a, b) => (b.precio || 0) - (a.precio || 0));
-
-        copiaLista.forEach(item => {
-            let numLote = item.lote ? item.lote.trim() : '';
-            if (!numLote) return;
-            if (vistos.has(numLote)) {
-                idsAEliminar.push(item.id);
-            } else {
-                vistos.add(numLote);
-            }
-        });
-
-        if (idsAEliminar.length === 0) {
-            alert('No se encontraron lotes duplicados en la base de datos.');
-            return;
-        }
-
-        let batch = db.batch();
-        let contador = 0;
-
-        idsAEliminar.forEach(id => {
-            let ref = db.collection('historial_subastas').doc(id);
-            batch.delete(ref);
-            contador++;
-        });
-
-        batch.commit().then(() => {
-            alert(`¡Se han eliminado ${contador} registros duplicados exitosamente!`);
-        }).catch(err => {
-            alert('Error al eliminar duplicados: ' + err.message);
-        });
+        renderizarTabla(filtradas);
     }
 
     function cargarEdicion(id) {
@@ -693,8 +537,8 @@
         document.getElementById('veh-anio').value = item.anio;
         document.getElementById('veh-lote').value = item.lote;
         document.getElementById('veh-modelo').value = item.modelo;
-        document.getElementById('veh-precio').value = item.precio ? Number(item.precio).toLocaleString('en-US') : '';
-        document.getElementById('veh-tope').value = item.tope ? Number(item.tope).toLocaleString('en-US') : '';
+        document.getElementById('veh-precio').value = item.precio;
+        document.getElementById('veh-tope').value = item.tope || '';
 
         document.getElementById('form-title-label').innerText = 'EDITAR REFERENCIA DE SUBASTA';
         document.getElementById('btn-guardar-actualizar').innerText = '💾 Actualizar Referencia';
