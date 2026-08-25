@@ -146,9 +146,6 @@
             text-transform: uppercase;
             width: 100%;
         }
-        .input-wrapper input {
-            padding-left: 28px;
-        }
         select option { text-transform: none; }
 
         .kpi-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
@@ -811,17 +808,17 @@
         let aiv = cif * 0.01;
         let tramiteAduanal = 113.00;
         let comisionFondos = cif * 0.0175;
-        let transferenciaInternacional = 45.00; // NUEVO: $45 fijos
-        let agenciaAduanal = 400.00; // ACTUALIZADO: $400
+        let transferenciaInternacional = 45.00;
+        let agenciaAduanal = 400.00;
 
         let tributosAduana = dai + apm + iva + aiv;
         let totalOtrosGastos = storage + reparacion + comisionFondos + agenciaAduanal + tramiteAduanal + transferenciaInternacional;
         let totalFinal = fob + flete + seguro + tributosAduana + totalOtrosGastos;
 
-        let ubicacionTexto = 'Manual';
-        if (ubicacionSeleccionada) {
-            ubicacionTexto = `${ubicacionSeleccionada.estado} - ${ubicacionSeleccionada.ciudad}`;
-        }
+        // Captura estructurada de estado y ciudad
+        let estadoGuardado = ubicacionSeleccionada ? ubicacionSeleccionada.estado : 'Manual / N/A';
+        let ciudadGuardada = ubicacionSeleccionada ? ubicacionSeleccionada.ciudad : 'Manual / N/A';
+        let ubicacionTexto = ubicacionSeleccionada ? `${ubicacionSeleccionada.estado} - ${ubicacionSeleccionada.ciudad}` : 'Manual';
 
         datosUltimoCalculo = {
             fecha: new Date().toLocaleDateString('es-ES'),
@@ -851,7 +848,10 @@
             totalFinal: totalFinal || 0,
             titulo: document.getElementById('titulo').value || 'salvage',
             categoria: document.getElementById('categoria').value || '0.20,0.04',
-            ubicacion: ubicacionTexto
+            ubicacion: ubicacionSeleccionada,
+            estado: estadoGuardado,
+            ciudad: ciudadGuardada,
+            origenFlete: ubicacionTexto
         };
 
         document.getElementById('kpi-total').innerText = fmt(totalFinal);
@@ -959,11 +959,25 @@
         document.getElementById('storage').value = item.storage || 0;
         document.getElementById('reparacion').value = item.reparacion || 0;
         
-        fleteAutomatico = false;
-        ubicacionSeleccionada = null;
-        document.getElementById('ubicacion').selectedIndex = 0;
-        actualizarStatusFlete();
+        // Restauración de estado y ciudad en el select
+        const selectUbicacion = document.getElementById('ubicacion');
+        let locObj = item.ubicacion;
 
+        if (!locObj && item.estado && item.estado !== 'Manual / N/A') {
+            locObj = { estado: item.estado, ciudad: item.ciudad, flete: item.flete };
+        }
+
+        if (locObj && locObj.estado && locObj.ciudad) {
+            fleteAutomatico = true;
+            ubicacionSeleccionada = locObj;
+            selectUbicacion.value = `${locObj.estado}|${locObj.ciudad}`;
+        } else {
+            fleteAutomatico = false;
+            ubicacionSeleccionada = null;
+            selectUbicacion.selectedIndex = 0;
+        }
+
+        actualizarStatusFlete();
         switchTab('calculadora', document.querySelectorAll('.nav-item')[0]);
         calcular();
     }
@@ -1015,6 +1029,8 @@
             costoTotal: item.totalFinal || 0,
             precioVenta: parseFloat(precioVenta) || 0,
             estado: 'Transito',
+            estadoOrigen: item.estado || (item.ubicacion ? item.ubicacion.estado : 'Manual'),
+            ciudadOrigen: item.ciudad || (item.ubicacion ? item.ubicacion.ciudad : 'Manual'),
             fechaIngreso: new Date().toISOString()
         };
 
@@ -1073,12 +1089,17 @@
             return;
         }
 
-        tbody.innerHTML = historialData.map((item) => `
+        tbody.innerHTML = historialData.map((item) => {
+            let origenTexto = item.origenFlete || (item.ubicacion && typeof item.ubicacion === 'object' ? `${item.ubicacion.estado} - ${item.ubicacion.ciudad}` : (typeof item.ubicacion === 'string' ? item.ubicacion : (item.estado && item.estado !== 'Manual / N/A' ? `${item.estado} - ${item.ciudad}` : 'Manual')));
+
+            return `
             <tr>
                 <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">${item.fecha || 'Sin fecha'}</td>
                 <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">
                     <strong>${item.vehiculo || 'Sin Nombre'}</strong>
-                    <br><span style="font-size:10px;color:var(--text-muted)">${item.vin || ''}</span>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">
+                        ${item.vin ? `VIN: ${item.vin} • ` : ''}📍 ${origenTexto}
+                    </div>
                 </td>
                 <td class="clickable-row" onclick="abrirCotizacion('${item.id}')">
                     <strong>${fmt(item.totalFinal)}</strong>
@@ -1091,7 +1112,8 @@
                     </div>
                 </td>
             </tr>
-        `).join('');
+            `;
+        }).join('');
     }
 
     // ============================================================
@@ -1162,7 +1184,8 @@
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
-        let ubicacionTexto = d.ubicacion || 'Manual';
+        let ubicacionTexto = d.origenFlete || (d.ubicacion && typeof d.ubicacion === 'object' ? `${d.ubicacion.estado} - ${d.ubicacion.ciudad}` : (typeof d.ubicacion === 'string' ? d.ubicacion : 'Manual'));
+
         let texto = `📋 *RESUMEN IMPORSALV*\n🚗 *Vehículo:* ${d.vehiculo}\n🔑 *VIN:* ${d.vin || 'N/A'}\n📍 *Ubicación:* ${ubicacionTexto}\n\n💵 *Subasta Base:* ${fmt(d.precio)}\n💳 *Buyer Fee:* ${fmt(d.buyerFee)}\n🏷️ *Otros Cargos Subasta:* ${fmt(d.copartExtra)}\n🚢 *Flete:* ${fmt(d.flete)}\n🛡️ *Seguro:* ${fmt(d.seguro)}\n🏛️ *DAI:* ${fmt(d.dai)}\n🏛️ *APM:* ${fmt(d.apm)}\n🏛️ *IVA:* ${fmt(d.iva)}\n🏛️ *AIV:* ${fmt(d.aiv)}\n📄 *Trámite Aduanal:* ${fmt(d.tramiteAduanal)}\n📦 *Storage:* ${fmt(d.storage)}\n🏦 *Pago a Cuenta 1.75%:* ${fmt(d.comisionFondos)}\n💸 *Transferencia Internacional:* ${fmt(d.transferenciaInternacional)}\n📋 *Comisión Agencia:* ${fmt(d.agenciaAduanal)}\n🔧 *Taller:* ${fmt(d.reparacion)}\n-----------------------------------\n💰 *TOTAL FINAL:* ${fmt(d.totalFinal)}`;
         navigator.clipboard.writeText(texto).then(() => alert('📋 Copiado al portapapeles'));
     }
