@@ -6,8 +6,6 @@
     <title>CALCULADORA IMPORSALV SA DE CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -26,7 +24,6 @@
             --danger: #ef4444;
             --highlight: #16A34A;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Inter', sans-serif;
@@ -36,7 +33,6 @@
             min-height: 100vh;
             padding-bottom: 70px;
         }
-
         .sidebar {
             width: 260px;
             background: var(--sidebar-bg);
@@ -47,7 +43,6 @@
             gap: 24px;
             flex-shrink: 0;
         }
-
         .logo-container {
             display: flex;
             flex-direction: column;
@@ -56,190 +51,122 @@
             padding-bottom: 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .logo-svg { width: 160px; height: auto; }
-
         .nav-menu { display: flex; flex-direction: column; gap: 8px; }
-
         .nav-item {
             display: flex; align-items: center; gap: 12px;
             padding: 12px 16px; border-radius: 10px; font-size: 14px;
             font-weight: 500; color: #94a3b8; cursor: pointer; transition: all 0.2s;
         }
-
         .nav-item.active { background: var(--primary); color: white; font-weight: 600; }
         .nav-item:hover:not(.active) { background: rgba(255, 255, 255, 0.05); color: #f1f5f9; }
-
         .cloud-badge {
             margin-top: auto; padding: 10px; border-radius: 8px;
             background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);
             color: #10b981; font-size: 11px; text-align: center; font-weight: 700;
         }
-
         .main-wrapper { flex: 1; padding: 20px 16px; overflow-x: hidden; width: 100%; max-width: 1450px; margin: 0 auto; }
-
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 10px; }
         .top-header h1 { font-size: 19px; font-weight: 800; letter-spacing: -0.3px; }
         .top-header p { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
-
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
         .dashboard { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
         @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
-
         .card {
             background: var(--card-bg); border-radius: 14px; padding: 18px;
             border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 18px;
         }
-
         .form-section-title {
             font-size: 12px; font-weight: 800; text-transform: uppercase;
             letter-spacing: 0.5px; color: var(--primary); margin-bottom: 14px; display: block;
             border-bottom: 1px solid var(--border); padding-bottom: 8px;
         }
-
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .form-group { display: flex; flex-direction: column; margin-bottom: 11px; }
         .form-group.full { grid-column: span 2; }
-
-        label { 
-            font-size: 11.5px; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            margin-bottom: 4px; 
-            text-transform: uppercase; 
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        label {
+            font-size: 11.5px; font-weight: 600; color: var(--text-muted);
+            margin-bottom: 4px; text-transform: uppercase; display: flex;
+            align-items: center; gap: 4px;
         }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
+        .input-wrapper { position: relative; display: flex; align-items: center; }
         .input-wrapper .currency-symbol {
-            position: absolute;
-            left: 12px;
-            font-weight: 700;
-            color: var(--text-muted);
-            font-size: 14px;
-            pointer-events: none;
+            position: absolute; left: 12px; font-weight: 700;
+            color: var(--text-muted); font-size: 14px; pointer-events: none;
         }
-        .input-wrapper input {
-            padding-left: 28px;
-            width: 100%;
-        }
-
+        .input-wrapper input { padding-left: 28px; width: 100%; }
         input, select {
-            padding: 9px 12px;
-            border: 1.5px solid var(--border);
-            border-radius: 9px;
-            font-size: 13.5px;
-            outline: none;
-            background: #f8fafc;
-            font-weight: 600;
-            width: 100%;
+            padding: 9px 12px; border: 1.5px solid var(--border);
+            border-radius: 9px; font-size: 13.5px; outline: none;
+            background: #f8fafc; font-weight: 600; width: 100%;
         }
         input:focus, select:focus {
-            border-color: var(--primary);
-            background: #fff;
+            border-color: var(--primary); background: #fff;
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
         }
         .input-highlight {
             background-color: #FEF9C3 !important;
             border-color: #FDE047 !important;
             color: #854D0E !important;
-            font-size: 15px;
-            font-weight: 700;
+            font-size: 15px; font-weight: 700;
         }
-
-        /* Top 5 Phases Cards */
         .kpi-phases {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 12px; margin-bottom: 20px;
         }
         @media (min-width: 768px) {
             .kpi-phases { grid-template-columns: repeat(5, 1fr); }
         }
-
         .kpi-phase-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px; position: relative;
+            overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
         .kpi-phase-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 4px; height: 100%; background: var(--primary);
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 4px; height: 100%; background: var(--primary);
         }
         .kpi-phase-card.fase5 { background: #F0FDF4; border-color: #BBF7D0; }
         .kpi-phase-card.fase5::before { background: var(--highlight); }
-
         .kpi-num { font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
         .kpi-val { font-size: 17px; font-weight: 800; color: var(--text-main); }
         @media (min-width: 768px) { .kpi-val { font-size: 18.5px; } }
         .kpi-desc { font-size: 10.5px; color: var(--text-muted); margin-top: 3px; }
-
-        /* 5 Phases Grid Breakdown */
         .phases-detail-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 16px; margin-bottom: 20px;
         }
-
         .phase-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
-
         .phase-box-header {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 12px;
-            padding-bottom: 8px;
+            font-size: 13px; font-weight: 800; color: var(--primary);
+            margin-bottom: 12px; padding-bottom: 8px;
             border-bottom: 2px solid var(--bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            display: flex; justify-content: space-between; align-items: center;
         }
-
         .item-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 12.5px;
+            display: flex; justify-content: space-between;
+            padding: 6px 0; font-size: 12.5px;
             border-bottom: 1px dashed var(--border);
         }
         .item-row:last-child { border-bottom: none; }
         .item-row.total {
-            font-weight: 800;
-            color: var(--primary);
-            padding-top: 10px;
-            margin-top: 6px;
+            font-weight: 800; color: var(--primary);
+            padding-top: 10px; margin-top: 6px;
             border-top: 1.5px solid var(--border);
-            border-bottom: none;
-            font-size: 13.5px;
+            border-bottom: none; font-size: 13.5px;
         }
-
         .table-responsive { width: 100%; overflow-x: auto; max-height: 350px; overflow-y: auto; }
         .data-table { width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: left; white-space: nowrap; }
         .data-table th { background: var(--bg); padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1.5px solid var(--border); text-transform: uppercase; font-size: 11px; }
         .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
         tr.active-row { background-color: #EFF6FF !important; font-weight: 700; }
-
         .action-btns { display: flex; gap: 8px; margin-top: 16px; }
         .btn { padding: 10px 16px; border: none; border-radius: 9px; font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-primary { background: var(--primary); color: white; }
@@ -248,7 +175,6 @@
         .btn-danger { background: var(--danger); color: white; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
         .btn-sm { padding: 4px 8px; font-size: 10px; border-radius: 6px; }
-
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; display: inline-block; }
         .badge-transito { background: #fef3c7; color: #b45309; }
         .badge-taller { background: #fae8ff; color: #86198f; }
@@ -257,21 +183,15 @@
         .clickable-row { cursor: pointer; transition: background 0.15s; }
         .clickable-row:hover { background: #f1f5f9; }
         .empty-state { text-align: center; padding: 30px; color: var(--text-muted); font-size: 12px; }
-
         .location-section {
-            background: #f0f7ff;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
+            background: #f0f7ff; border: 2px solid var(--primary);
+            border-radius: 12px; padding: 14px; margin-bottom: 12px;
         }
         .location-selector { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 6px; }
         .location-selector select { flex: 2; min-width: 180px; background: white; font-weight: 500; text-transform: none; }
         .flete-status { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; }
         .badge-status { padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 10px; }
         .badge-status.auto { background: #dcfce7; color: #15803d; }
-        .badge-status.manual { background: #fef3c7; color: #b45309; }
-
         @media (max-width: 768px) {
             body { flex-direction: column; padding-bottom: 80px; }
             .sidebar {
@@ -321,7 +241,7 @@
 </div>
 
 <div class="main-wrapper">
-    
+
     <!-- TAB 1: CALCULADORA -->
     <div id="calculadora" class="tab-content active">
         <div class="top-header">
@@ -366,7 +286,7 @@
                         </div>
                         <div class="form-group full">
                             <label>Categoría Arancelaria (Motor)</label>
-                            <select id="inputCategoria" class="input-control" onchange="calcular()">
+                            <select id="inputCategoria" class="input-control" onchange="onCategoriaChange()">
                                 <option value="1.3">Sedan/HB Motor &le; 1300 cc (DAI 20%, Matr 4%)</option>
                                 <option value="2.0" selected>Sedan/SUV Motor 1.4L - 2.0L (DAI 25%, Matr 4%)</option>
                                 <option value="2.1">Motor &gt; 2.0L 4x2 (DAI 30%, Matr 4%)</option>
@@ -383,14 +303,13 @@
                     <span class="form-section-title">2. Ubicación, Grúa y Flete</span>
                     <div class="form-group full location-section" style="margin-bottom: 12px; background:#f0f7ff; border:2px solid var(--primary); border-radius:10px; padding:10px;">
                         <label style="color:var(--primary); font-weight:800;">📍 SELECCIONAR PATIO DE SUBASTA (272 Patios)</label>
+                        <input type="text" id="buscarPatio" placeholder="🔍 Escribe estado o ciudad (Ej: TX, Miami, Dallas, PA, CA)..." oninput="filtrarPatios()" style="margin-bottom: 8px; background: #ffffff; border: 1.5px solid var(--primary); font-size: 12.5px;">
                         <div class="location-selector">
-                            <select id="selectLocation" onchange="onLocationChange()">
-                                <!-- Inyectado por JS -->
-                            </select>
+                            <select id="selectLocation" onchange="onLocationChange()"></select>
                         </div>
                         <div class="flete-status">
                             <span>Estado flete:</span>
-                            <span class="badge-status auto" id="flete-status-badge">✅ Automático</span>
+                            <span class="badge-status auto" id="flete-status-badge">✅ Automático según Categoría</span>
                         </div>
                     </div>
 
@@ -406,7 +325,7 @@
                             <label>Flete Marítimo/SV ($)</label>
                             <div class="input-wrapper">
                                 <span class="currency-symbol">$</span>
-                                <input type="number" id="inputFlete" value="835" oninput="calcular()">
+                                <input type="number" id="inputFlete" value="935" oninput="calcular()">
                             </div>
                         </div>
                         <div class="form-group">
@@ -508,7 +427,6 @@
 
                 <!-- 5 Phase Detail Grid -->
                 <div class="phases-detail-grid">
-                    <!-- FASE 1 -->
                     <div class="phase-box">
                         <div class="phase-box-header">
                             <span>FASE 1: Subasta</span>
@@ -521,7 +439,6 @@
                         <div class="item-row total"><span>Total Subasta:</span><span id="txtFase1Sub">$0.00</span></div>
                     </div>
 
-                    <!-- FASE 2 -->
                     <div class="phase-box">
                         <div class="phase-box-header">
                             <span>FASE 2: Flete y Logística</span>
@@ -534,7 +451,6 @@
                         <div class="item-row total"><span>Grúa + Flete SV + BL:</span><span id="txtFase2Sub">$0.00</span></div>
                     </div>
 
-                    <!-- FASE 3 -->
                     <div class="phase-box">
                         <div class="phase-box-header">
                             <span>FASE 3: Aduana e Impuestos</span>
@@ -550,7 +466,6 @@
                         <div class="item-row total"><span>Total Liquidación Aduana:</span><span id="txtFase3Sub">$0.00</span></div>
                     </div>
 
-                    <!-- FASE 4 -->
                     <div class="phase-box">
                         <div class="phase-box-header">
                             <span>FASE 4: Gastos Fijos y Trámites</span>
@@ -565,7 +480,6 @@
                         <div class="item-row total"><span>Total Gastos Fijos y Taller:</span><span id="txtFase4Sub">$0.00</span></div>
                     </div>
 
-                    <!-- FASE 5 -->
                     <div class="phase-box" style="background:#F0FDF4; border-color:#BBF7D0;">
                         <div class="phase-box-header" style="color:#16A34A;">
                             <span>FASE 5: Consolidado Final</span>
@@ -576,6 +490,29 @@
                         <div class="item-row"><span>Fase 3 (Aduana e Impuestos):</span><span id="txtF5_3">$0.00</span></div>
                         <div class="item-row"><span>Fase 4 (Gastos Fijos + Taller):</span><span id="txtF5_4">$0.00</span></div>
                         <div class="item-row total" style="color:#16A34A; font-size:14px;"><span>Costo total fuera de aduana:</span><strong id="txtFase5Sub">$0.00</strong></div>
+                    </div>
+                </div>
+
+                <!-- TABLA DE SENSIBILIDAD (ARREGLADA) -->
+                <div class="card">
+                    <span class="form-section-title">📊 Análisis de Sensibilidad por Puja</span>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Puja</th>
+                                    <th>Fase 1</th>
+                                    <th>Fase 2</th>
+                                    <th>CIF</th>
+                                    <th>Fase 3</th>
+                                    <th>Fase 4</th>
+                                    <th>Total Final</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaSensibilidad">
+                                <tr><td colspan="7" class="empty-state">Escribe un valor de puja para ver el análisis</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -651,7 +588,7 @@
 </div>
 
 <script>
-    const LOCATIONS_DB = [{"location": "Phoenix (Copart/ LAAI)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 275.0, "flete": 1095.0, "bl": 20.0}, {"location": "Phoenix North (Copart)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Tucson (Copart/ IAAI)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ace Carson (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ace Perris (LAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Adelanto (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Anaheim (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 175.0, "flete": 1095.0, "bl": 20.0}, {"location": "Anaheim Consolidated (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Antelope (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 350.0, "flete": 1095.0, "bl": 20.0}, {"location": "Bakersfield (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 250.0, "flete": 1095.0, "bl": 20.0}, {"location": "Colton (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "East Bay (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fontana (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fremont (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fresno (Copart/ IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Hayward (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "High Desert (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 250.0, "flete": 1095.0, "bl": 20.0}, {"location": "Lancaster (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Long Beach (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 135.0, "flete": 1095.0, "bl": 20.0}, {"location": "Los Angeles (Copart/ IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Los Angeles South (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Martinez (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 375.0, "flete": 1095.0, "bl": 20.0}, {"location": "Mentone (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Modesto (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 425.0, "flete": 1095.0, "bl": 20.0}, {"location": "N. Hollywood (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 225.0, "flete": 1095.0, "bl": 20.0}, {"location": "R.Cucamonga (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Redding (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 550.0, "flete": 1095.0, "bl": 20.0}, {"location": "Riverside / Jurupa Valley (IAAI)*", "state_code": "CA", "port": "CALIFORNIA", "grua": 225.0, "flete": 1095.0, "bl": 20.0}, {"location": "Sacramento (Copart/ IAAD)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Bernardino (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Diego (Copart/IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 255.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Jose (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Santa Paula (IAAI)*", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Santa Clarita (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "So Sacramento (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Sun Valley (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Vallejo (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 375.0, "flete": 1095.0, "bl": 20.0}, {"location": "Van Nuys (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 175.0, "flete": 1095.0, "bl": 20.0}, {"location": "Colorado Springs (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver (Copart/ IAAI)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver Central (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver East (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 696.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver South (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Western Colorado (IAAI)", "state_code": "CO", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Honolulu (Copart/ IAAI)", "state_code": "HI", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Boise (Copart/ IAAI)", "state_code": "ID", "port": "CALIFORNIA", "grua": 775.0, "flete": 1095.0, "bl": 20.0}, {"location": "Billings (Copart/ IAAI)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Helena (Copart)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Missoula (IAAI)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Las Vegas (Copart/ IAAI)", "state_code": "NV", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Las Vegas Sublote (Copart)", "state_code": "NV", "port": "CALIFORNIA", "grua": 350.0, "flete": 1095.0, "bl": 20.0}, {"location": "Reno (Copart/ IAAI)", "state_code": "NV", "port": "CALIFORNIA", "grua": 625.0, "flete": 1095.0, "bl": 20.0}, {"location": "Albuquerque (Copart/ IAAI)", "state_code": "NM", "port": "CALIFORNIA", "grua": 795.0, "flete": 1095.0, "bl": 20.0}, {"location": "Eugene (Copart/ LAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland (IAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland North (Copart)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland South (Copart)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland West (IAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Vancouver (IAAI)*", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ogden (Copart)", "state_code": "UT", "port": "CALIFORNIA", "grua": 450.0, "flete": 1095.0, "bl": 20.0}, {"location": "Provo (IAAI)", "state_code": "UT", "port": "CALIFORNIA", "grua": 475.0, "flete": 1095.0, "bl": 20.0}, {"location": "Salt Lake City (Copart/IAAI)", "state_code": "UT", "port": "CALIFORNIA", "grua": 450.0, "flete": 1095.0, "bl": 20.0}, {"location": "Graham (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Spanaway (Copart)*", "state_code": "WA", "port": "CALIFORNIA", "grua": 725.0, "flete": 1095.0, "bl": 20.0}, {"location": "North Seattle (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 750.0, "flete": 1095.0, "bl": 20.0}, {"location": "Pasco (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 895.0, "flete": 1095.0, "bl": 20.0}, {"location": "Puyallup (IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Seattle (IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Spokane (Copart/ IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 900.0, "flete": 1095.0, "bl": 20.0}, {"location": "Birmingham (Copart/ IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Dothan (Copart/ IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Huntsville (IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Mobile (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Mobile South (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Montgomery (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Tanner (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Fayetteville (Copart/ IAAI)", "state_code": "AR", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Little Rock (Copart/ IAAI)", "state_code": "AR", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Clearwater (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Clewiston (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Myers (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Pierce (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 150.0, "flete": 835.0, "bl": 20.0}, {"location": "Jacksonville (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "Jacksonville North (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami Central (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami North (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Ocala (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando North (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Pensacola (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Punta Gorda (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Punta Gorda South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tallahassee (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 320.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa North (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 205.0, "flete": 835.0, "bl": 20.0}, {"location": "Thonotosassa (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "West Palm Beach (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 120.0, "flete": 835.0, "bl": 20.0}, {"location": "West Palm Beach (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 145.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta (IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta Crashedtoys (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta East/ North/ South (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta West (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Augusta", "state_code": "GA", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Cartersville (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Fairburn (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Macon (Copart / IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Savannah (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Tifton (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago North (Copart/ IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago South (Copart/ IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago West (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Lincoln (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 825.0, "flete": 835.0, "bl": 20.0}, {"location": "Peoria (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 825.0, "flete": 835.0, "bl": 20.0}, {"location": "Southern Illinois (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Louis (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Wheeling (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Cicero (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Dyer (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Wayne (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 900.0, "flete": 835.0, "bl": 20.0}, {"location": "Hammond (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Indianapolis (Copart/ IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 670.0, "flete": 835.0, "bl": 20.0}, {"location": "Indianapolis South (IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 670.0, "flete": 835.0, "bl": 20.0}, {"location": "South Bend (IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 875.0, "flete": 835.0, "bl": 20.0}, {"location": "Davenport (Copart/ IAAI)", "state_code": "IA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Des Moines (Copart/ IAAI)", "state_code": "IA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Kansas City (Copart/ IAAI)", "state_code": "KS", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Wichita (Copart/ IAAI)", "state_code": "KS", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Ashland (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Bowling Green (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Earlington (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 800.0, "flete": 835.0, "bl": 20.0}, {"location": "Lexington East/ West (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Louisville (Copart/ IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Louisville North (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Paducah (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 975.0, "flete": 835.0, "bl": 20.0}, {"location": "Walton (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 625.0, "flete": 835.0, "bl": 20.0}, {"location": "Baton Rogue (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Lafayette (IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 525.0, "flete": 835.0, "bl": 20.0}, {"location": "New Orleans (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "New Orleans East (IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Shreveport (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Baltimore (Copart/ IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Baltimore East (Copart)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Dundalk (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Laurel (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Metro DC (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Washington DC (Copart)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Detroit (Copart/ IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 850.0, "flete": 835.0, "bl": 20.0}, {"location": "Flint (Copart/ IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Grand Rapids (IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Ionia (Copart)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Lansing (Copart)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis North (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis/ St. Paul (IAAI)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Cloud (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Grenada (IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Gulf Coast (IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Jackson (Copart/ IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbia (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Kansas City East (IAAI)", "state_code": "MO", "port": "FLORIDA", "grua": 695.0, "flete": 835.0, "bl": 20.0}, {"location": "Sikeston (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Springfield (Copart/ IAAI)", "state_code": "MO", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Louis (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Asheville (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Charlotte (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "China Grove (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Concord (Copart/ IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Gastonia (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 425.0, "flete": 835.0, "bl": 20.0}, {"location": "Greensboro (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "High Point", "state_code": "NC", "port": "FLORIDA", "grua": 450.0, "flete": 835.0, "bl": 20.0}, {"location": "Lumberton (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Mebane (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Mocksville (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 430.0, "flete": 835.0, "bl": 20.0}, {"location": "Raleigh (Copart/ IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Raleigh North (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Wilmington (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Akron-Canton (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 775.0, "flete": 835.0, "bl": 20.0}, {"location": "Cincinnati (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Cincinnati South (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Cleveland (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Cleveland East/ West (Copart)", "state_code": "OH", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbus (Copart/ IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Dayton (Copart/ IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Oklahoma City (Copart/ IAAI)", "state_code": "OK", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Tulsa (Copart/ IAAI)", "state_code": "OK", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Charleston (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbia (Copart/ IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "Gaston (Copart)*", "state_code": "SC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Greenville (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Lexington (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "North Charleston (Copart)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "Sha Liu (Copart)*", "state_code": "SC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Spartanburg (Copart)", "state_code": "SC", "port": "FLORIDA", "grua": 360.0, "flete": 835.0, "bl": 20.0}, {"location": "Chattanooga (IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Knoxville (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Memphis (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Nashville (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Austin (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas / Ft Worth (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas South (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Worth North (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Ft Worth (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston East (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston North (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston South (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "San Antonio (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "San Antonio South (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Culpeper (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Danville (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Fredericksburg (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Fredericksburg South (Copart/IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Hampton (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 575.0, "flete": 835.0, "bl": 20.0}, {"location": "Northern Virginia (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Pulaski (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Richmond (Copart/ IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Richmond East (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Roanoke (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Suffolk (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Tidewater (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Buckhannon (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Charleston (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Shady Spring (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "CT-HARTFORD", "state_code": "CT", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "HASTFORD", "state_code": "CT", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "NEW CASTLE", "state_code": "DE", "port": "New York", "grua": 400.0, "flete": 950.0, "bl": 20.0}, {"location": "PORTLAND GORHAM", "state_code": "ME", "port": "New York", "grua": 775.0, "flete": 950.0, "bl": 20.0}, {"location": "LYMAN", "state_code": "ME", "port": "New York", "grua": 775.0, "flete": 950.0, "bl": 20.0}, {"location": "SOUTH BOSTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "NORT BOSTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "BOSTON SHIRLEY", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "WEST WARREN", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "EAST TAUNTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "LINCON, OMAHA", "state_code": "NE", "port": "New York", "grua": 1050.0, "flete": 950.0, "bl": 20.0}, {"location": "MANCHESTER NH", "state_code": "NH", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "WEBSTER", "state_code": "NH", "port": "New York", "grua": 630.0, "flete": 950.0, "bl": 20.0}, {"location": "GLASSBORO (WEST/EAST)", "state_code": "NJ", "port": "New York", "grua": 340.0, "flete": 950.0, "bl": 20.0}, {"location": "NORTHERN NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 370.0, "flete": 950.0, "bl": 20.0}, {"location": "AVENEL", "state_code": "NJ", "port": "New York", "grua": 375.0, "flete": 950.0, "bl": 20.0}, {"location": "CENTRAL NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 380.0, "flete": 950.0, "bl": 20.0}, {"location": "SOMERVILLE", "state_code": "NJ", "port": "New York", "grua": 385.0, "flete": 950.0, "bl": 20.0}, {"location": "TRENTON NJ", "state_code": "NJ", "port": "New York", "grua": 390.0, "flete": 950.0, "bl": 20.0}, {"location": "SOUTHERN NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 410.0, "flete": 950.0, "bl": 20.0}, {"location": "BARNEGAT", "state_code": "NJ", "port": "New York", "grua": 465.0, "flete": 950.0, "bl": 20.0}, {"location": "NEWBURGH", "state_code": "NY", "port": "New York", "grua": 500.0, "flete": 950.0, "bl": 20.0}, {"location": "LONG ISLAND", "state_code": "NY", "port": "New York", "grua": 575.0, "flete": 950.0, "bl": 20.0}, {"location": "ALBANY", "state_code": "NY", "port": "New York", "grua": 575.0, "flete": 950.0, "bl": 20.0}, {"location": "SYRACUSE", "state_code": "NY", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "ROCHESTER", "state_code": "NY", "port": "New York", "grua": 750.0, "flete": 950.0, "bl": 20.0}, {"location": "BUFFALO", "state_code": "NY", "port": "New York", "grua": 850.0, "flete": 950.0, "bl": 20.0}, {"location": "PHILADELPHIA", "state_code": "PA", "port": "New York", "grua": 410.0, "flete": 950.0, "bl": 20.0}, {"location": "HAZLETON", "state_code": "PA", "port": "New York", "grua": 420.0, "flete": 950.0, "bl": 20.0}, {"location": "YORK HAVEN", "state_code": "PA", "port": "New York", "grua": 440.0, "flete": 950.0, "bl": 20.0}, {"location": "CHALFONT", "state_code": "PA", "port": "New York", "grua": 450.0, "flete": 950.0, "bl": 20.0}, {"location": "GRANTVILLEPA", "state_code": "PA", "port": "New York", "grua": 450.0, "flete": 950.0, "bl": 20.0}, {"location": "SCRANTON", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "HARRISBURG", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "HARRISBURG PALMYRA", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "GRANTVILLE PA", "state_code": "PA", "port": "New York", "grua": 480.0, "flete": 950.0, "bl": 20.0}, {"location": "CHAMBERSBURGH", "state_code": "PA", "port": "New York", "grua": 510.0, "flete": 950.0, "bl": 20.0}, {"location": "KARTHAUS", "state_code": "PA", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "DRAVOSBURG SALVAGE 15034", "state_code": "PA", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "ALTOONA", "state_code": "PA", "port": "New York", "grua": 600.0, "flete": 950.0, "bl": 20.0}, {"location": "PITTSBURGH", "state_code": "PA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "TITUSVILLE", "state_code": "PA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "MILWAKEE", "state_code": "WI", "port": "New York", "grua": 875.0, "flete": 950.0, "bl": 20.0}, {"location": "APLETON", "state_code": "WI", "port": "New York", "grua": 900.0, "flete": 950.0, "bl": 20.0}, {"location": "PORTAGE", "state_code": "WI", "port": "New York", "grua": 900.0, "flete": 950.0, "bl": 20.0}];
+    const LOCATIONS_DB = [{"location": "Phoenix (Copart/ LAAI)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 275.0, "flete": 1095.0, "bl": 20.0}, {"location": "Phoenix North (Copart)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Tucson (Copart/ IAAI)", "state_code": "AZ", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ace Carson (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ace Perris (LAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Adelanto (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Anaheim (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 175.0, "flete": 1095.0, "bl": 20.0}, {"location": "Anaheim Consolidated (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 175.0, "flete": 1095.0, "bl": 20.0}, {"location": "Antelope (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 350.0, "flete": 1095.0, "bl": 20.0}, {"location": "Bakersfield (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 250.0, "flete": 1095.0, "bl": 20.0}, {"location": "Colton (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "East Bay (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fontana (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fremont (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Fresno (Copart/ IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Hayward (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "High Desert (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 250.0, "flete": 1095.0, "bl": 20.0}, {"location": "Lancaster (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Long Beach (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 135.0, "flete": 1095.0, "bl": 20.0}, {"location": "Los Angeles (Copart/ IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Los Angeles South (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 150.0, "flete": 1095.0, "bl": 20.0}, {"location": "Martinez (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 375.0, "flete": 1095.0, "bl": 20.0}, {"location": "Mentone (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Modesto (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 425.0, "flete": 1095.0, "bl": 20.0}, {"location": "N. Hollywood (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 225.0, "flete": 1095.0, "bl": 20.0}, {"location": "R.Cucamonga (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Redding (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 550.0, "flete": 1095.0, "bl": 20.0}, {"location": "Riverside / Jurupa Valley (IAAI)*", "state_code": "CA", "port": "CALIFORNIA", "grua": 225.0, "flete": 1095.0, "bl": 20.0}, {"location": "Sacramento (Copart/ IAAD)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Bernardino (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Diego (Copart/IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 255.0, "flete": 1095.0, "bl": 20.0}, {"location": "San Jose (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 400.0, "flete": 1095.0, "bl": 20.0}, {"location": "Santa Paula (IAAI)*", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "Santa Clarita (IAAI)", "state_code": "CA", "port": "CALIFORNIA", "grua": 300.0, "flete": 1095.0, "bl": 20.0}, {"location": "So Sacramento (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Sun Valley (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 200.0, "flete": 1095.0, "bl": 20.0}, {"location": "Vallejo (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 375.0, "flete": 1095.0, "bl": 20.0}, {"location": "Van Nuys (Copart)", "state_code": "CA", "port": "CALIFORNIA", "grua": 175.0, "flete": 1095.0, "bl": 20.0}, {"location": "Colorado Springs (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver (Copart/ IAAI)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver Central (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver East (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 696.0, "flete": 1095.0, "bl": 20.0}, {"location": "Denver South (Copart)", "state_code": "CO", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Western Colorado (IAAI)", "state_code": "CO", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Honolulu (Copart/ IAAI)", "state_code": "HI", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Boise (Copart/ IAAI)", "state_code": "ID", "port": "CALIFORNIA", "grua": 775.0, "flete": 1095.0, "bl": 20.0}, {"location": "Billings (Copart/ IAAI)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Helena (Copart)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Missoula (IAAI)", "state_code": "MT", "port": "CALIFORNIA", "grua": 1299.0, "flete": 1095.0, "bl": 20.0}, {"location": "Las Vegas (Copart/ IAAI)", "state_code": "NV", "port": "CALIFORNIA", "grua": 325.0, "flete": 1095.0, "bl": 20.0}, {"location": "Las Vegas Sublote (Copart)", "state_code": "NV", "port": "CALIFORNIA", "grua": 350.0, "flete": 1095.0, "bl": 20.0}, {"location": "Reno (Copart/ IAAI)", "state_code": "NV", "port": "CALIFORNIA", "grua": 625.0, "flete": 1095.0, "bl": 20.0}, {"location": "Albuquerque (Copart/ IAAI)", "state_code": "NM", "port": "CALIFORNIA", "grua": 795.0, "flete": 1095.0, "bl": 20.0}, {"location": "Eugene (Copart/ LAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland (IAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland North (Copart)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland South (Copart)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Portland West (IAAI)", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Vancouver (IAAI)*", "state_code": "OR", "port": "CALIFORNIA", "grua": 595.0, "flete": 1095.0, "bl": 20.0}, {"location": "Ogden (Copart)", "state_code": "UT", "port": "CALIFORNIA", "grua": 450.0, "flete": 1095.0, "bl": 20.0}, {"location": "Provo (IAAI)", "state_code": "UT", "port": "CALIFORNIA", "grua": 475.0, "flete": 1095.0, "bl": 20.0}, {"location": "Salt Lake City (Copart/IAAI)", "state_code": "UT", "port": "CALIFORNIA", "grua": 450.0, "flete": 1095.0, "bl": 20.0}, {"location": "Graham (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Spanaway (Copart)*", "state_code": "WA", "port": "CALIFORNIA", "grua": 725.0, "flete": 1095.0, "bl": 20.0}, {"location": "North Seattle (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 750.0, "flete": 1095.0, "bl": 20.0}, {"location": "Pasco (Copart)", "state_code": "WA", "port": "CALIFORNIA", "grua": 895.0, "flete": 1095.0, "bl": 20.0}, {"location": "Puyallup (IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Seattle (IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 695.0, "flete": 1095.0, "bl": 20.0}, {"location": "Spokane (Copart/ IAAI)", "state_code": "WA", "port": "CALIFORNIA", "grua": 900.0, "flete": 1095.0, "bl": 20.0}, {"location": "Birmingham (Copart/ IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Dothan (Copart/ IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Huntsville (IAAI)", "state_code": "AL", "port": "FLORIDA", "grua": 485.0, "flete": 835.0, "bl": 20.0}, {"location": "Mobile (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Mobile South (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Montgomery (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Tanner (Copart)", "state_code": "AL", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Fayetteville (Copart/ IAAI)", "state_code": "AR", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Little Rock (Copart/ IAAI)", "state_code": "AR", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Clearwater (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Clewiston (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Myers (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Pierce (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 150.0, "flete": 835.0, "bl": 20.0}, {"location": "Jacksonville (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "Jacksonville North (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami Central (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami North (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Miami South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 100.0, "flete": 835.0, "bl": 20.0}, {"location": "Ocala (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando North (Copart/ IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Orlando South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 175.0, "flete": 835.0, "bl": 20.0}, {"location": "Pensacola (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Punta Gorda (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 220.0, "flete": 835.0, "bl": 20.0}, {"location": "Punta Gorda South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tallahassee (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 320.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa North (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 225.0, "flete": 835.0, "bl": 20.0}, {"location": "Tampa South (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 205.0, "flete": 835.0, "bl": 20.0}, {"location": "Thonotosassa (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 250.0, "flete": 835.0, "bl": 20.0}, {"location": "West Palm Beach (Copart)", "state_code": "FL", "port": "FLORIDA", "grua": 120.0, "flete": 835.0, "bl": 20.0}, {"location": "West Palm Beach (IAAI)", "state_code": "FL", "port": "FLORIDA", "grua": 145.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta (IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta Crashedtoys (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta East/ North/ South (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Atlanta West (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Augusta", "state_code": "GA", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Cartersville (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Fairburn (Copart)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Macon (Copart / IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Savannah (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Tifton (Copart/ IAAI)", "state_code": "GA", "port": "FLORIDA", "grua": 345.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago North (Copart/ IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago South (Copart/ IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Chicago West (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Lincoln (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 825.0, "flete": 835.0, "bl": 20.0}, {"location": "Peoria (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 825.0, "flete": 835.0, "bl": 20.0}, {"location": "Southern Illinois (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Louis (IAAI)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Wheeling (Copart)", "state_code": "IL", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Cicero (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Dyer (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 700.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Wayne (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 900.0, "flete": 835.0, "bl": 20.0}, {"location": "Hammond (Copart)", "state_code": "IN", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Indianapolis (Copart/ IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 670.0, "flete": 835.0, "bl": 20.0}, {"location": "Indianapolis South (IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 670.0, "flete": 835.0, "bl": 20.0}, {"location": "South Bend (IAAI)", "state_code": "IN", "port": "FLORIDA", "grua": 875.0, "flete": 835.0, "bl": 20.0}, {"location": "Davenport (Copart/ IAAI)", "state_code": "IA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Des Moines (Copart/ IAAI)", "state_code": "IA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Kansas City (Copart/ IAAI)", "state_code": "KS", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Wichita (Copart/ IAAI)", "state_code": "KS", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Ashland (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Bowling Green (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Earlington (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 800.0, "flete": 835.0, "bl": 20.0}, {"location": "Lexington East/ West (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Louisville (Copart/ IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Louisville North (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Paducah (IAAI)", "state_code": "KY", "port": "FLORIDA", "grua": 975.0, "flete": 835.0, "bl": 20.0}, {"location": "Walton (Copart)", "state_code": "KY", "port": "FLORIDA", "grua": 625.0, "flete": 835.0, "bl": 20.0}, {"location": "Baton Rogue (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Lafayette (IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 525.0, "flete": 835.0, "bl": 20.0}, {"location": "New Orleans (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "New Orleans East (IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Shreveport (Copart/ IAAI)", "state_code": "LA", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Baltimore (Copart/ IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Baltimore East (Copart)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Dundalk (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Laurel (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Metro DC (IAAI)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Washington DC (Copart)", "state_code": "MD", "port": "FLORIDA", "grua": 580.0, "flete": 835.0, "bl": 20.0}, {"location": "Detroit (Copart/ IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 850.0, "flete": 835.0, "bl": 20.0}, {"location": "Flint (Copart/ IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Grand Rapids (IAAI)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Ionia (Copart)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Lansing (Copart)", "state_code": "MI", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis North (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Minneapolis/ St. Paul (IAAI)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Cloud (Copart)", "state_code": "MN", "port": "FLORIDA", "grua": 795.0, "flete": 835.0, "bl": 20.0}, {"location": "Grenada (IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Gulf Coast (IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 495.0, "flete": 835.0, "bl": 20.0}, {"location": "Jackson (Copart/ IAAI)", "state_code": "MS", "port": "FLORIDA", "grua": 475.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbia (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Kansas City East (IAAI)", "state_code": "MO", "port": "FLORIDA", "grua": 695.0, "flete": 835.0, "bl": 20.0}, {"location": "Sikeston (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Springfield (Copart/ IAAI)", "state_code": "MO", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "St. Louis (Copart)", "state_code": "MO", "port": "FLORIDA", "grua": 675.0, "flete": 835.0, "bl": 20.0}, {"location": "Asheville (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Charlotte (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "China Grove (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Concord (Copart/ IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Gastonia (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 425.0, "flete": 835.0, "bl": 20.0}, {"location": "Greensboro (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "High Point", "state_code": "NC", "port": "FLORIDA", "grua": 450.0, "flete": 835.0, "bl": 20.0}, {"location": "Lumberton (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Mebane (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Mocksville (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 430.0, "flete": 835.0, "bl": 20.0}, {"location": "Raleigh (Copart/ IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Raleigh North (Copart)", "state_code": "NC", "port": "FLORIDA", "grua": 395.0, "flete": 835.0, "bl": 20.0}, {"location": "Wilmington (IAAI)", "state_code": "NC", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Akron-Canton (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 775.0, "flete": 835.0, "bl": 20.0}, {"location": "Cincinnati (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Cincinnati South (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Cleveland (IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Cleveland East/ West (Copart)", "state_code": "OH", "port": "FLORIDA", "grua": 750.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbus (Copart/ IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Dayton (Copart/ IAAI)", "state_code": "OH", "port": "FLORIDA", "grua": 725.0, "flete": 835.0, "bl": 20.0}, {"location": "Oklahoma City (Copart/ IAAI)", "state_code": "OK", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Tulsa (Copart/ IAAI)", "state_code": "OK", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Charleston (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Columbia (Copart/ IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "Gaston (Copart)*", "state_code": "SC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Greenville (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 350.0, "flete": 835.0, "bl": 20.0}, {"location": "Lexington (IAAI)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "North Charleston (Copart)", "state_code": "SC", "port": "FLORIDA", "grua": 325.0, "flete": 835.0, "bl": 20.0}, {"location": "Sha Liu (Copart)*", "state_code": "SC", "port": "FLORIDA", "grua": 400.0, "flete": 835.0, "bl": 20.0}, {"location": "Spartanburg (Copart)", "state_code": "SC", "port": "FLORIDA", "grua": 360.0, "flete": 835.0, "bl": 20.0}, {"location": "Chattanooga (IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Knoxville (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Memphis (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Nashville (Copart/ IAAI)", "state_code": "TN", "port": "FLORIDA", "grua": 480.0, "flete": 835.0, "bl": 20.0}, {"location": "Austin (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas / Ft Worth (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Dallas South (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Fort Worth North (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Ft Worth (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston East (Copart)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston North (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Houston South (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "San Antonio (Copart/ IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "San Antonio South (IAAI)", "state_code": "TX", "port": "FLORIDA", "grua": 500.0, "flete": 835.0, "bl": 20.0}, {"location": "Culpeper (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Danville (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 600.0, "flete": 835.0, "bl": 20.0}, {"location": "Fredericksburg (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Fredericksburg South (Copart/IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Hampton (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 575.0, "flete": 835.0, "bl": 20.0}, {"location": "Northern Virginia (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Pulaski (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Richmond (Copart/ IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Richmond East (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Roanoke (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Suffolk (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Tidewater (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 550.0, "flete": 835.0, "bl": 20.0}, {"location": "Buckhannon (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Charleston (Copart)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "Shady Spring (IAAI)", "state_code": "WV", "port": "FLORIDA", "grua": 1299.0, "flete": 835.0, "bl": 20.0}, {"location": "CT-HARTFORD", "state_code": "CT", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "HASTFORD", "state_code": "CT", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "NEW CASTLE", "state_code": "DE", "port": "New York", "grua": 400.0, "flete": 950.0, "bl": 20.0}, {"location": "PORTLAND GORHAM", "state_code": "ME", "port": "New York", "grua": 775.0, "flete": 950.0, "bl": 20.0}, {"location": "LYMAN", "state_code": "ME", "port": "New York", "grua": 775.0, "flete": 950.0, "bl": 20.0}, {"location": "SOUTH BOSTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "NORT BOSTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "BOSTON SHIRLEY", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "WEST WARREN", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "EAST TAUNTON", "state_code": "MA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "LINCON, OMAHA", "state_code": "NE", "port": "New York", "grua": 1050.0, "flete": 950.0, "bl": 20.0}, {"location": "MANCHESTER NH", "state_code": "NH", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "WEBSTER", "state_code": "NH", "port": "New York", "grua": 630.0, "flete": 950.0, "bl": 20.0}, {"location": "GLASSBORO (WEST/EAST)", "state_code": "NJ", "port": "New York", "grua": 340.0, "flete": 950.0, "bl": 20.0}, {"location": "NORTHERN NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 370.0, "flete": 950.0, "bl": 20.0}, {"location": "AVENEL", "state_code": "NJ", "port": "New York", "grua": 375.0, "flete": 950.0, "bl": 20.0}, {"location": "CENTRAL NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 380.0, "flete": 950.0, "bl": 20.0}, {"location": "SOMERVILLE", "state_code": "NJ", "port": "New York", "grua": 385.0, "flete": 950.0, "bl": 20.0}, {"location": "TRENTON NJ", "state_code": "NJ", "port": "New York", "grua": 390.0, "flete": 950.0, "bl": 20.0}, {"location": "SOUTHERN NEW JERSEY", "state_code": "NJ", "port": "New York", "grua": 410.0, "flete": 950.0, "bl": 20.0}, {"location": "BARNEGAT", "state_code": "NJ", "port": "New York", "grua": 465.0, "flete": 950.0, "bl": 20.0}, {"location": "NEWBURGH", "state_code": "NY", "port": "New York", "grua": 500.0, "flete": 950.0, "bl": 20.0}, {"location": "LONG ISLAND", "state_code": "NY", "port": "New York", "grua": 575.0, "flete": 950.0, "bl": 20.0}, {"location": "ALBANY", "state_code": "NY", "port": "New York", "grua": 575.0, "flete": 950.0, "bl": 20.0}, {"location": "SYRACUSE", "state_code": "NY", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "ROCHESTER", "state_code": "NY", "port": "New York", "grua": 750.0, "flete": 950.0, "bl": 20.0}, {"location": "BUFFALO", "state_code": "NY", "port": "New York", "grua": 850.0, "flete": 950.0, "bl": 20.0}, {"location": "PHILADELPHIA", "state_code": "PA", "port": "New York", "grua": 410.0, "flete": 950.0, "bl": 20.0}, {"location": "HAZLETON", "state_code": "PA", "port": "New York", "grua": 420.0, "flete": 950.0, "bl": 20.0}, {"location": "YORK HAVEN", "state_code": "PA", "port": "New York", "grua": 440.0, "flete": 950.0, "bl": 20.0}, {"location": "CHALFONT", "state_code": "PA", "port": "New York", "grua": 450.0, "flete": 950.0, "bl": 20.0}, {"location": "GRANTVILLEPA", "state_code": "PA", "port": "New York", "grua": 450.0, "flete": 950.0, "bl": 20.0}, {"location": "SCRANTON", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "HARRISBURG", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "HARRISBURG PALMYRA", "state_code": "PA", "port": "New York", "grua": 475.0, "flete": 950.0, "bl": 20.0}, {"location": "GRANTVILLE PA", "state_code": "PA", "port": "New York", "grua": 480.0, "flete": 950.0, "bl": 20.0}, {"location": "CHAMBERSBURGH", "state_code": "PA", "port": "New York", "grua": 510.0, "flete": 950.0, "bl": 20.0}, {"location": "KARTHAUS", "state_code": "PA", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "DRAVOSBURG SALVAGE 15034", "state_code": "PA", "port": "New York", "grua": 550.0, "flete": 950.0, "bl": 20.0}, {"location": "ALTOONA", "state_code": "PA", "port": "New York", "grua": 600.0, "flete": 950.0, "bl": 20.0}, {"location": "PITTSBURGH", "state_code": "PA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "TITUSVILLE", "state_code": "PA", "port": "New York", "grua": 625.0, "flete": 950.0, "bl": 20.0}, {"location": "MILWAKEE", "state_code": "WI", "port": "New York", "grua": 875.0, "flete": 950.0, "bl": 20.0}, {"location": "APLETON", "state_code": "WI", "port": "New York", "grua": 900.0, "flete": 950.0, "bl": 20.0}, {"location": "PORTAGE", "state_code": "WI", "port": "New York", "grua": 900.0, "flete": 950.0, "bl": 20.0}];
 
     const firebaseConfig = {
         apiKey: "AIzaSyDJnpVBknIaxZpnA7Mp_drKtU_K5beCeKw",
@@ -668,6 +605,16 @@
     let historialData = [];
     let inventarioData = [];
     let datosUltimoCalculo = {};
+
+    const FLETES_POR_CATEGORIA = {
+        "1.3":      { "FLORIDA": 835,  "CALIFORNIA": 1095, "New York": 950  },
+        "2.0":      { "FLORIDA": 935,  "CALIFORNIA": 1295, "New York": 1025 },
+        "2.1":      { "FLORIDA": 935,  "CALIFORNIA": 1295, "New York": 1025 },
+        "4x4":      { "FLORIDA": 1325, "CALIFORNIA": 1395, "New York": 1500 },
+        "pickup":   { "FLORIDA": 1325, "CALIFORNIA": 1395, "New York": 1500 },
+        "moto250":  { "FLORIDA": 475,  "CALIFORNIA": 595,  "New York": 600  },
+        "moto_mas": { "FLORIDA": 475,  "CALIFORNIA": 595,  "New York": 600  }
+    };
 
     const buyerFeeTableSalvage = [
         { max: 49.99, fee: 25 }, { max: 99.99, fee: 45 }, { max: 199.99, fee: 80 },
@@ -705,27 +652,86 @@
         { max: 5999.99, fee: 125 }, { max: 7999.99, fee: 145 }, { max: Infinity, fee: 160 }
     ];
 
-    function populateLocations() {
+    function populateLocations(filtro = '') {
         const select = document.getElementById('selectLocation');
         select.innerHTML = '';
-        LOCATIONS_DB.forEach((loc, index) => {
-            const opt = document.createElement('option');
-            opt.value = index;
-            opt.textContent = `${loc.state_code} - ${loc.location} (${loc.port})`;
-            if (loc.location.includes("Nashville")) opt.selected = true;
-            select.appendChild(opt);
+
+        const filtroNorm = filtro.toLowerCase().trim();
+
+        const ordenados = LOCATIONS_DB.map((loc, idx) => ({ ...loc, originalIndex: idx }))
+            .sort((a, b) => {
+                if (a.state_code === b.state_code) {
+                    return a.location.localeCompare(b.location);
+                }
+                return a.state_code.localeCompare(b.state_code);
+            });
+
+        let estadoActual = '';
+        let optgroupActual = null;
+
+        ordenados.forEach(loc => {
+            const textoCompleto = `${loc.state_code} ${loc.location} ${loc.port}`.toLowerCase();
+            if (filtroNorm === '' || textoCompleto.includes(filtroNorm)) {
+                if (loc.state_code !== estadoActual) {
+                    estadoActual = loc.state_code;
+                    optgroupActual = document.createElement('optgroup');
+                    optgroupActual.label = `── ESTADO: ${estadoActual} ──`;
+                    select.appendChild(optgroupActual);
+                }
+
+                const opt = document.createElement('option');
+                opt.value = loc.originalIndex;
+                opt.textContent = `${loc.state_code} - ${loc.location} (${loc.port}) | Grúa: $${loc.grua}`;
+
+                optgroupActual.appendChild(opt);
+            }
         });
+
+        // Seleccionar la primera opción válida por defecto
+        if (select.options.length > 0 && select.selectedIndex === -1) {
+            select.selectedIndex = 0;
+        }
+
+        if (select.children.length === 0) {
+            const opt = document.createElement('option');
+            opt.textContent = "❌ No se encontraron patios coincidentes";
+            select.appendChild(opt);
+        }
+    }
+
+    function filtrarPatios() {
+        const query = document.getElementById('buscarPatio').value;
+        populateLocations(query);
+        onLocationChange();
+    }
+
+    function actualizarFleteSegunCategoria(loc) {
+        const cat = document.getElementById('inputCategoria').value;
+        const tarifasCat = FLETES_POR_CATEGORIA[cat] || FLETES_POR_CATEGORIA["2.0"];
+        const fleteCalculado = tarifasCat[loc.port] || loc.flete;
+        document.getElementById('inputFlete').value = fleteCalculado;
     }
 
     function onLocationChange() {
         const select = document.getElementById('selectLocation');
-        const loc = LOCATIONS_DB[select.value];
+        const idx = parseInt(select.value);
+        const loc = LOCATIONS_DB[idx];
         if (loc) {
             document.getElementById('inputGrua').value = loc.grua;
-            document.getElementById('inputFlete').value = loc.flete;
             document.getElementById('inputBL').value = loc.bl;
+            actualizarFleteSegunCategoria(loc);
             calcular();
         }
+    }
+
+    function onCategoriaChange() {
+        const select = document.getElementById('selectLocation');
+        const idx = parseInt(select.value);
+        const loc = LOCATIONS_DB[idx];
+        if (loc) {
+            actualizarFleteSegunCategoria(loc);
+        }
+        calcular();
     }
 
     function getBuyerFee(puja, isClean) {
@@ -750,7 +756,7 @@
     function calculatePhases(puja, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas) {
         const buyerFee = getBuyerFee(puja, isClean);
         const virtualFee = getVirtualFee(puja);
-        const subastaFijos = 95 + 15 + 20; // Gate + Env + Title
+        const subastaFijos = 95 + 15 + 20;
         const totalSubastaFees = buyerFee + virtualFee + subastaFijos;
 
         const fase1 = puja + totalSubastaFees;
@@ -769,7 +775,7 @@
         const dai = cif * daiRate;
         const iva = (cif + dai) * 0.13;
         const aiv = cif * 0.01;
-        const tasasAduana = 40; // Escáner + SIDUNEA
+        const tasasAduana = 40;
         const matricula = (cif + dai + iva + aiv) * matrRate;
         const totalImpuestosDGA = dai + iva + aiv + tasasAduana + matricula;
 
@@ -788,110 +794,114 @@
     }
 
     function calcular() {
-        const puja = parseFloat(document.getElementById('inputPuja').value) || 0;
-        const isClean = document.getElementById('inputTitulo').value === "Clean";
-        const cat = document.getElementById('inputCategoria').value;
-        const grua = parseFloat(document.getElementById('inputGrua').value) || 0;
-        const flete = parseFloat(document.getElementById('inputFlete').value) || 0;
-        const bl = parseFloat(document.getElementById('inputBL').value) || 0;
-        const seguro = parseFloat(document.getElementById('inputSeguro').value) || 0;
-        const wire = parseFloat(document.getElementById('inputWire').value) || 0;
-        const comision = parseFloat(document.getElementById('inputComision').value) || 0;
-        const aduanaFijo = parseFloat(document.getElementById('inputAduanaFijo').value) || 0;
-        const taller = parseFloat(document.getElementById('inputTaller').value) || 0;
-        const repuestos = parseFloat(document.getElementById('inputRepuestos').value) || 0;
-        const placas = parseFloat(document.getElementById('inputPlacas').value) || 0;
+        try {
+            const puja = parseFloat(document.getElementById('inputPuja').value) || 0;
+            const isClean = document.getElementById('inputTitulo').value === "Clean";
+            const cat = document.getElementById('inputCategoria').value;
+            const grua = parseFloat(document.getElementById('inputGrua').value) || 0;
+            const flete = parseFloat(document.getElementById('inputFlete').value) || 0;
+            const bl = parseFloat(document.getElementById('inputBL').value) || 0;
+            const seguro = parseFloat(document.getElementById('inputSeguro').value) || 0;
+            const wire = parseFloat(document.getElementById('inputWire').value) || 0;
+            const comision = parseFloat(document.getElementById('inputComision').value) || 0;
+            const aduanaFijo = parseFloat(document.getElementById('inputAduanaFijo').value) || 0;
+            const taller = parseFloat(document.getElementById('inputTaller').value) || 0;
+            const repuestos = parseFloat(document.getElementById('inputRepuestos').value) || 0;
+            const placas = parseFloat(document.getElementById('inputPlacas').value) || 0;
 
-        const res = calculatePhases(puja, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas);
+            const res = calculatePhases(puja, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas);
 
-        datosUltimoCalculo = {
-            fecha: new Date().toLocaleDateString('es-ES'),
-            timestamp: Date.now(),
-            vehiculo: document.getElementById('vehiculo').value || 'Sin especificar',
-            vin: document.getElementById('vin').value || 'N/A',
-            lote: document.getElementById('lote').value || 'N/A',
-            puja, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas,
-            ...res
-        };
+            datosUltimoCalculo = {
+                fecha: new Date().toLocaleDateString('es-ES'),
+                timestamp: Date.now(),
+                vehiculo: document.getElementById('vehiculo').value || 'Sin especificar',
+                vin: document.getElementById('vin').value || 'N/A',
+                lote: document.getElementById('lote').value || 'N/A',
+                puja, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas,
+                ...res
+            };
 
-        // Top Cards
-        document.getElementById('kpiFase1').innerText = formatMoney(res.fase1);
-        document.getElementById('kpiFase2').innerText = formatMoney(res.fase2);
-        document.getElementById('kpiFase3').innerText = formatMoney(res.fase3);
-        document.getElementById('kpiFase4').innerText = formatMoney(res.fase4);
-        document.getElementById('kpiFase5').innerText = formatMoney(res.fase5);
+            // Top Cards
+            document.getElementById('kpiFase1').innerText = formatMoney(res.fase1);
+            document.getElementById('kpiFase2').innerText = formatMoney(res.fase2);
+            document.getElementById('kpiFase3').innerText = formatMoney(res.fase3);
+            document.getElementById('kpiFase4').innerText = formatMoney(res.fase4);
+            document.getElementById('kpiFase5').innerText = formatMoney(res.fase5);
 
-        // Fase 1 Box
-        document.getElementById('txtFase1Header').innerText = formatMoney(res.fase1);
-        document.getElementById('txtPuja').innerText = formatMoney(res.puja);
-        document.getElementById('txtBuyerFee').innerText = formatMoney(res.buyerFee);
-        document.getElementById('txtVirtualFee').innerText = formatMoney(res.virtualFee);
-        document.getElementById('txtFase1Sub').innerText = formatMoney(res.fase1);
+            // Fase 1 Box
+            document.getElementById('txtFase1Header').innerText = formatMoney(res.fase1);
+            document.getElementById('txtPuja').innerText = formatMoney(res.puja);
+            document.getElementById('txtBuyerFee').innerText = formatMoney(res.buyerFee);
+            document.getElementById('txtVirtualFee').innerText = formatMoney(res.virtualFee);
+            document.getElementById('txtFase1Sub').innerText = formatMoney(res.fase1);
 
-        // Fase 2 Box
-        document.getElementById('txtFase2Header').innerText = formatMoney(res.fase2);
-        document.getElementById('txtGrua').innerText = formatMoney(res.grua);
-        document.getElementById('txtFlete').innerText = formatMoney(res.flete);
-        document.getElementById('txtBL').innerText = formatMoney(res.bl);
-        document.getElementById('txtSeguro').innerText = formatMoney(res.seguro);
-        document.getElementById('txtFase2Sub').innerText = formatMoney(res.fase2);
+            // Fase 2 Box
+            document.getElementById('txtFase2Header').innerText = formatMoney(res.fase2);
+            document.getElementById('txtGrua').innerText = formatMoney(res.grua);
+            document.getElementById('txtFlete').innerText = formatMoney(res.flete);
+            document.getElementById('txtBL').innerText = formatMoney(res.bl);
+            document.getElementById('txtSeguro').innerText = formatMoney(res.seguro);
+            document.getElementById('txtFase2Sub').innerText = formatMoney(res.fase2);
 
-        // Fase 3 Box
-        document.getElementById('txtFase3Header').innerText = formatMoney(res.fase3);
-        document.getElementById('txtCIF').innerText = formatMoney(res.cif);
-        document.getElementById('lblDAI').innerText = `DAI (${(res.daiRate * 100).toFixed(0)}%):`;
-        document.getElementById('txtDAI').innerText = formatMoney(res.dai);
-        document.getElementById('txtIVA').innerText = formatMoney(res.iva);
-        document.getElementById('txtAIV').innerText = formatMoney(res.aiv);
-        document.getElementById('lblMatr').innerText = `1ra Matrícula (${(res.matrRate * 100).toFixed(0)}%):`;
-        document.getElementById('txtMatr').innerText = formatMoney(res.matricula);
-        document.getElementById('txtPagoCuenta').innerText = formatMoney(res.pagoCuenta);
-        document.getElementById('txtFase3Sub').innerText = formatMoney(res.fase3);
+            // Fase 3 Box
+            document.getElementById('txtFase3Header').innerText = formatMoney(res.fase3);
+            document.getElementById('txtCIF').innerText = formatMoney(res.cif);
+            document.getElementById('lblDAI').innerText = `DAI (${(res.daiRate * 100).toFixed(0)}%):`;
+            document.getElementById('txtDAI').innerText = formatMoney(res.dai);
+            document.getElementById('txtIVA').innerText = formatMoney(res.iva);
+            document.getElementById('txtAIV').innerText = formatMoney(res.aiv);
+            document.getElementById('lblMatr').innerText = `1ra Matrícula (${(res.matrRate * 100).toFixed(0)}%):`;
+            document.getElementById('txtMatr').innerText = formatMoney(res.matricula);
+            document.getElementById('txtPagoCuenta').innerText = formatMoney(res.pagoCuenta);
+            document.getElementById('txtFase3Sub').innerText = formatMoney(res.fase3);
 
-        // Fase 4 Box
-        document.getElementById('txtFase4Header').innerText = formatMoney(res.fase4);
-        document.getElementById('txtWire').innerText = formatMoney(res.wire);
-        document.getElementById('txtAduanaFijo').innerText = formatMoney(res.aduanaFijo);
-        document.getElementById('txtComision').innerText = formatMoney(res.comision);
-        document.getElementById('txtPlacas').innerText = formatMoney(res.placas);
-        document.getElementById('txtTaller').innerText = formatMoney(res.taller);
-        document.getElementById('txtRepuestos').innerText = formatMoney(res.repuestos);
-        document.getElementById('txtFase4Sub').innerText = formatMoney(res.fase4);
+            // Fase 4 Box
+            document.getElementById('txtFase4Header').innerText = formatMoney(res.fase4);
+            document.getElementById('txtWire').innerText = formatMoney(res.wire);
+            document.getElementById('txtAduanaFijo').innerText = formatMoney(res.aduanaFijo);
+            document.getElementById('txtComision').innerText = formatMoney(res.comision);
+            document.getElementById('txtPlacas').innerText = formatMoney(res.placas);
+            document.getElementById('txtTaller').innerText = formatMoney(res.taller);
+            document.getElementById('txtRepuestos').innerText = formatMoney(res.repuestos);
+            document.getElementById('txtFase4Sub').innerText = formatMoney(res.fase4);
 
-        // Fase 5 Box
-        document.getElementById('txtFase5Header').innerText = formatMoney(res.fase5);
-        document.getElementById('txtF5_1').innerText = formatMoney(res.fase1);
-        document.getElementById('txtF5_2').innerText = formatMoney(res.fase2);
-        document.getElementById('txtF5_3').innerText = formatMoney(res.fase3);
-        document.getElementById('txtF5_4').innerText = formatMoney(res.fase4);
-        document.getElementById('txtFase5Sub').innerText = formatMoney(res.fase5);
+            // Fase 5 Box
+            document.getElementById('txtFase5Header').innerText = formatMoney(res.fase5);
+            document.getElementById('txtF5_1').innerText = formatMoney(res.fase1);
+            document.getElementById('txtF5_2').innerText = formatMoney(res.fase2);
+            document.getElementById('txtF5_3').innerText = formatMoney(res.fase3);
+            document.getElementById('txtF5_4').innerText = formatMoney(res.fase4);
+            document.getElementById('txtFase5Sub').innerText = formatMoney(res.fase5);
 
-        // Tabla de Sensibilidad
-        const steps = [600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2500, 2800, 3200];
-        let tbody = "";
-        for (let p of steps) {
-            const r = calculatePhases(p, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas);
-            const isSelected = Math.abs(p - puja) < 50;
+            // Tabla de Sensibilidad
+            const steps = [600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2200, 2500, 2800, 3200];
+            let tbody = "";
+            for (let p of steps) {
+                const r = calculatePhases(p, isClean, cat, grua, flete, bl, seguro, wire, comision, aduanaFijo, taller, repuestos, placas);
+                const isSelected = Math.abs(p - puja) < 50;
+                tbody += `
+                    <tr class="${isSelected ? 'active-row' : ''}">
+                        <td><strong>${formatMoney(p)}</strong></td>
+                        <td>${formatMoney(r.fase1)}</td>
+                        <td>${formatMoney(r.fase2)}</td>
+                        <td>${formatMoney(r.cif)}</td>
+                        <td>${formatMoney(r.fase3)}</td>
+                        <td>${formatMoney(r.fase4)}</td>
+                        <td><strong style="color:#16A34A;">${formatMoney(r.fase5)}</strong></td>
+                    </tr>
+                `;
+            }
+            const tabla = document.getElementById('tablaSensibilidad');
+            if (tabla) tabla.innerHTML = tbody;
 
-            tbody += `
-                <tr class="${isSelected ? 'active-row' : ''}">
-                    <td><strong>${formatMoney(p)}</strong></td>
-                    <td>${formatMoney(r.fase1)}</td>
-                    <td>${formatMoney(r.fase2)}</td>
-                    <td>${formatMoney(r.cif)}</td>
-                    <td>${formatMoney(r.fase3)}</td>
-                    <td>${formatMoney(r.fase4)}</td>
-                    <td><strong style="color:#16A34A;">${formatMoney(r.fase5)}</strong></td>
-                </tr>
-            `;
+        } catch (err) {
+            console.error('Error en calcular():', err);
         }
-        document.getElementById('tablaSensibilidad').innerHTML = tbody;
     }
 
-    // Firebase actions
     function guardarEnHistorial() {
-        if (!datosUltimoCalculo || !datosUltimoCalculo.vehiculo) {
-            alert('⚠️ Especifica un nombre o modelo de vehículo.');
+        if (!datosUltimoCalculo || !datosUltimoCalculo.vehiculo || datosUltimoCalculo.vehiculo === 'Sin especificar') {
+            alert('⚠️ Especifica un nombre o modelo de vehículo antes de guardar.');
             return;
         }
         db.collection('historial').add(datosUltimoCalculo)
@@ -956,6 +966,7 @@ Costo total: ${formatMoney(item.fase5)}`, (item.fase5 * 1.25).toFixed(2));
         let tbody = document.getElementById('tabla-historial');
         if (historialData.length === 0) {
             tbody.innerHTML = `<tr><td colspan="4" class="empty-state">📭 No hay cotizaciones guardadas.</td></tr>`;
+            document.getElementById('rep-tot-cot').innerText = 0;
             return;
         }
         tbody.innerHTML = historialData.map(item => `
@@ -978,6 +989,7 @@ Costo total: ${formatMoney(item.fase5)}`, (item.fase5 * 1.25).toFixed(2));
         let tbody = document.getElementById('tabla-inventario');
         if (inventarioData.length === 0) {
             tbody.innerHTML = `<tr><td colspan="4" class="empty-state">📭 Stock vacío.</td></tr>`;
+            document.getElementById('rep-tot-inv').innerText = 0;
             return;
         }
         tbody.innerHTML = inventarioData.map(item => `
@@ -995,11 +1007,15 @@ Costo total: ${formatMoney(item.fase5)}`, (item.fase5 * 1.25).toFixed(2));
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        element.classList.add('active');
+        if (element) element.classList.add('active');
     }
 
     function copiarResumen() {
         let d = datosUltimoCalculo;
+        if (!d || !d.fase5) {
+            alert('⚠️ Primero realiza un cálculo.');
+            return;
+        }
         let texto = `📋 *RESUMEN IMPORSALV*
 🚗 *Vehículo:* ${d.vehiculo}
 🔑 *VIN:* ${d.vin}
